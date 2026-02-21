@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Env files
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+
+# Build output
+dist/
+
+# Coverage
+coverage/
+
+# Temp files
+tmp/
+temp/
+
+# OS
+.DS_Store
