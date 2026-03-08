@@ -1,7 +1,28 @@
-import React from 'react'
+import Image from 'next/image'
+import { Button, Group, Text } from '@mantine/core'
+import logo from '@/public/logo.svg'
 
 const Header = () => {
-  return <div>Header</div>
+  return (
+    <>
+      <Group
+        justify="space-between"
+        p="sm"
+      >
+        <Group>
+          <Image
+            src={logo}
+            alt="FitRep Logo"
+            height={40}
+          />
+          <Text>Fitness, traced.</Text>
+        </Group>
+        <Group>
+          <Button>Login</Button>
+        </Group>
+      </Group>
+    </>
+  )
 }
 
 export default Header
