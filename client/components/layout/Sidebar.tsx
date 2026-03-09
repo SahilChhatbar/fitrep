@@ -1,17 +1,45 @@
 import React from 'react'
-import { Stack, Text } from '@mantine/core'
+import { Stack, NavLink } from '@mantine/core'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
-const Sidebar = (): React.JSX.Element => {
+interface SidebarProps {
+  toggle: () => void;
+}
+
+const Sidebar = ({ toggle }: SidebarProps): React.JSX.Element => {
+  const pathname = usePathname();
+
+  const handleLinkClick = () => {
+    toggle();
+  };
+
   return (
-    <>
-      <Stack>
-        <Link href="/dashboard"><Text>Dashboard</Text></Link>
-        <Link href="/workouts"><Text>Workouts</Text></Link>
-        <Link href="/diet"><Text>Diet</Text></Link>
-      </Stack>
-    </>
+    <Stack gap="xs">
+      <NavLink
+        component={Link}
+        href="/dashboard"
+        label="Dashboard"
+        active={pathname === '/dashboard'}
+        onClick={handleLinkClick}
+      />
+      <NavLink
+        component={Link}
+        href="/workouts"
+        label="Workouts"
+        active={pathname === '/workouts'}
+        onClick={handleLinkClick}
+      />
+      <NavLink
+        component={Link}
+        href="/diet"
+        label="Diet"
+        active={pathname === '/diet'}
+        onClick={handleLinkClick}
+      />
+    </Stack>
   )
 }
 
 export default Sidebar
+
