@@ -15,7 +15,7 @@ const Header = () => {
             alt="FitRep Logo"
             height={40}
           />
-          <Text>Fitness, traced.</Text>
+          <Text style={{ fontStyle: 'italic' }}>Fitness, tracked.</Text>
         </Group>
         <Group>
           <Button>Login</Button>

@@ -1,9 +1,9 @@
-import { Stack } from "@mantine/core"
+import { Stack, Text } from "@mantine/core"
 
 const page = () => {
     return (
-        <Stack align="center" justify="center" h="100vh">
-            dashboard
+        <Stack justify="center" h="100%">
+            <Text>dashboard</Text>
         </Stack>
     )
 }
