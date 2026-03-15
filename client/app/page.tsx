@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import { Button, Card, Group, Stack, Text } from '@mantine/core'
+import Link from 'next/link'
+import { Button, Card, Group, Stack, Text, Title } from '@mantine/core'
 import logo from '@/public/logo.svg'
 
 export default function Home() {
@@ -9,11 +10,18 @@ export default function Home() {
       h="100%"
     >
       <Stack>
-        <Text size="lg">Fitness, tracked.</Text>
+        <Title
+          order={1}
+          fw={900}
+        >
+          Fitness, tracked.
+        </Title>
         <Text size="sm">
           Log your workouts, diet, track your progress, and achieve your fitness goals.
         </Text>
-        <Button>Get Started</Button>
+        <Link href="/dashboard">
+          <Button>Get Started</Button>
+        </Link>
       </Stack>
       <Stack
         align="center"
@@ -25,18 +33,22 @@ export default function Home() {
           height={200}
           width={200}
         />
-        <Text size="lg">Your fitness, logged.</Text>
+        <Title>Your fitness, logged.</Title>
         <Group>
           <Card>
             <Stack>
               <Text size="lg">Get a workout plan, suitable for your goals.</Text>
-              <Button>Get Started</Button>
+              <Link href="/workouts">
+                <Button>Get Started</Button>
+              </Link>
             </Stack>
           </Card>
           <Card>
             <Stack>
               <Text size="lg">Get a diet plan, suitable for your goals.</Text>
-              <Button>Get Started</Button>
+              <Link href="/diet">
+                <Button>Get Started</Button>
+              </Link>
             </Stack>
           </Card>
         </Group>
