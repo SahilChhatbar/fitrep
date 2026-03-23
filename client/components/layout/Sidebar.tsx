@@ -31,7 +31,9 @@ const Sidebar = ({ toggle }: SidebarProps): React.JSX.Element => {
           href={item.href}
           label={item.label}
           active={pathname === item.href}
-          onClick={handleLinkClick} />))}
+          onClick={handleLinkClick}
+        />
+      ))}
     </Stack>
   )
 }
