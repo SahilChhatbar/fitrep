@@ -20,7 +20,7 @@ try {
 
     console.log("Data seeded successfully")
 
-    process.exit(1)
+    process.exit(0)
     } catch(err) {
     console.error("Data Seeding failed:", err)
     process.exit(0)
