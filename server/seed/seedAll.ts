@@ -17,7 +17,7 @@ const seedAll = async () => {
     await seedWorkouts();
     await seedDiets();
 
-    console.log("=== Seeding complete ===");
+    console.log("Seeding complete");
     process.exit(0);
   } catch (err) {
     console.error("Seeding failed:", err);

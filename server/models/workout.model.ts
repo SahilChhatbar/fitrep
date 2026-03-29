@@ -15,6 +15,8 @@ interface ExerciseDetails {
 
 interface Exercise {
   name: string;
+  sets?: number;
+  reps?: string;
   details?: ExerciseDetails;
 }
 
@@ -46,6 +48,8 @@ const ExerciseDetailsSchema = new Schema<ExerciseDetails>(
 const ExerciseSchema = new Schema<Exercise>(
   {
     name: { type: String, required: true },
+    sets: { type: Number },
+    reps: { type: String },
     details: { type: ExerciseDetailsSchema },
   },
   { _id: false },
