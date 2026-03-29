@@ -1,26 +1,26 @@
 import React from 'react'
-import { Stack, NavLink } from '@mantine/core'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { NavLink, Stack } from '@mantine/core'
 
 interface SidebarProps {
-  toggle: () => void;
+  toggle: () => void
 }
 type NavItem = {
-  href: string;
-  label: string;
-};
+  href: string
+  label: string
+}
 
 const Sidebar = ({ toggle }: SidebarProps): React.JSX.Element => {
-  const pathname = usePathname();
+  const pathname = usePathname()
   const navItems: NavItem[] = [
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/workouts", label: "Workouts" },
-    { href: "/diet", label: "Diet" },
-  ];
+    { href: '/dashboard', label: 'Dashboard' },
+    { href: '/workouts', label: 'Workouts' },
+    { href: '/diet', label: 'Diet' },
+  ]
   const handleLinkClick = () => {
-    toggle();
-  };
+    toggle()
+  }
 
   return (
     <Stack gap="xs">
@@ -39,4 +39,3 @@ const Sidebar = ({ toggle }: SidebarProps): React.JSX.Element => {
 }
 
 export default Sidebar
-

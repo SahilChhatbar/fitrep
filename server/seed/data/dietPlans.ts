@@ -12,25 +12,43 @@ export const dietPlans = [
       {
         name: "Breakfast",
         foods: [
-          { fdcId: 8120, name: "Oats" },
-          { fdcId: 173944, name: "Milk" }
-        ]
+          {
+            name: "Oats",
+            nutrition: { calories: 389, protein: 17, carbs: 66, fat: 7 },
+          },
+          {
+            name: "Milk",
+            nutrition: { calories: 61, protein: 3, carbs: 5, fat: 3 },
+          },
+        ],
       },
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 169910, name: "Rice" }
-        ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
       },
       {
         name: "Dinner",
         foods: [
-          { fdcId: 170379, name: "Egg" },
-          { fdcId: 11090, name: "Broccoli" }
-        ]
-      }
-    ]
+          {
+            name: "Egg",
+            nutrition: { calories: 155, protein: 13, carbs: 1, fat: 11 },
+          },
+          {
+            name: "Broccoli",
+            nutrition: { calories: 34, protein: 3, carbs: 7, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -44,25 +62,43 @@ export const dietPlans = [
       {
         name: "Breakfast",
         foods: [
-          { fdcId: 170379, name: "Egg" },
-          { fdcId: 173944, name: "Milk" }
-        ]
+          {
+            name: "Egg",
+            nutrition: { calories: 155, protein: 13, carbs: 1, fat: 11 },
+          },
+          {
+            name: "Milk",
+            nutrition: { calories: 61, protein: 3, carbs: 5, fat: 3 },
+          },
+        ],
       },
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 11090, name: "Broccoli" }
-        ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "Broccoli",
+            nutrition: { calories: 34, protein: 3, carbs: 7, fat: 0 },
+          },
+        ],
       },
       {
         name: "Dinner",
         foods: [
-          { fdcId: 173410, name: "Salmon" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Salmon",
+            nutrition: { calories: 208, protein: 20, carbs: 0, fat: 13 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -76,18 +112,30 @@ export const dietPlans = [
       {
         name: "Breakfast",
         foods: [
-          { fdcId: 170379, name: "Egg" },
-          { fdcId: 173410, name: "Salmon" }
-        ]
+          {
+            name: "Egg",
+            nutrition: { calories: 155, protein: 13, carbs: 1, fat: 11 },
+          },
+          {
+            name: "Salmon",
+            nutrition: { calories: 208, protein: 20, carbs: 0, fat: 13 },
+          },
+        ],
       },
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 11090, name: "Broccoli" }
-        ]
-      }
-    ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "Broccoli",
+            nutrition: { calories: 34, protein: 3, carbs: 7, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -101,18 +149,30 @@ export const dietPlans = [
       {
         name: "Breakfast",
         foods: [
-          { fdcId: 8120, name: "Oats" },
-          { fdcId: 173944, name: "Milk" }
-        ]
+          {
+            name: "Oats",
+            nutrition: { calories: 389, protein: 17, carbs: 66, fat: 7 },
+          },
+          {
+            name: "Milk",
+            nutrition: { calories: 61, protein: 3, carbs: 5, fat: 3 },
+          },
+        ],
       },
       {
         name: "Lunch",
         foods: [
-          { fdcId: 172475, name: "Tofu" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Tofu",
+            nutrition: { calories: 76, protein: 8, carbs: 2, fat: 4 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -126,18 +186,30 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 169910, name: "Rice" }
-        ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
       },
       {
         name: "Dinner",
         foods: [
-          { fdcId: 173410, name: "Salmon" },
-          { fdcId: 11090, name: "Broccoli" }
-        ]
-      }
-    ]
+          {
+            name: "Salmon",
+            nutrition: { calories: 208, protein: 20, carbs: 0, fat: 13 },
+          },
+          {
+            name: "Broccoli",
+            nutrition: { calories: 34, protein: 3, carbs: 7, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -151,11 +223,17 @@ export const dietPlans = [
       {
         name: "Breakfast",
         foods: [
-          { fdcId: 170379, name: "Egg" },
-          { fdcId: 171688, name: "Butter" }
-        ]
-      }
-    ]
+          {
+            name: "Egg",
+            nutrition: { calories: 155, protein: 13, carbs: 1, fat: 11 },
+          },
+          {
+            name: "Butter",
+            nutrition: { calories: 717, protein: 1, carbs: 0, fat: 81 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -169,11 +247,17 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   // MUSCLE GAIN (8–14)
@@ -189,18 +273,30 @@ export const dietPlans = [
       {
         name: "Breakfast",
         foods: [
-          { fdcId: 8120, name: "Oats" },
-          { fdcId: 173944, name: "Milk" }
-        ]
+          {
+            name: "Oats",
+            nutrition: { calories: 389, protein: 17, carbs: 66, fat: 7 },
+          },
+          {
+            name: "Milk",
+            nutrition: { calories: 61, protein: 3, carbs: 5, fat: 3 },
+          },
+        ],
       },
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -214,11 +310,17 @@ export const dietPlans = [
       {
         name: "Breakfast",
         foods: [
-          { fdcId: 8120, name: "Oats" },
-          { fdcId: 173944, name: "Milk" }
-        ]
-      }
-    ]
+          {
+            name: "Oats",
+            nutrition: { calories: 389, protein: 17, carbs: 66, fat: 7 },
+          },
+          {
+            name: "Milk",
+            nutrition: { calories: 61, protein: 3, carbs: 5, fat: 3 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -232,11 +334,17 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 170379, name: "Egg" }
-        ]
-      }
-    ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "Egg",
+            nutrition: { calories: 155, protein: 13, carbs: 1, fat: 11 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -250,11 +358,17 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -268,11 +382,17 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 172482, name: "Cheese" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Cheese",
+            nutrition: { calories: 402, protein: 25, carbs: 1, fat: 33 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -286,11 +406,17 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 172475, name: "Tofu" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Tofu",
+            nutrition: { calories: 76, protein: 8, carbs: 2, fat: 4 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -304,11 +430,17 @@ export const dietPlans = [
       {
         name: "Dinner",
         foods: [
-          { fdcId: 173410, name: "Salmon" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Salmon",
+            nutrition: { calories: 208, protein: 20, carbs: 0, fat: 13 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   // MAINTENANCE (15–20)
@@ -324,11 +456,17 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" },
-          { fdcId: 169910, name: "Rice" }
-        ]
-      }
-    ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+          {
+            name: "White Rice",
+            nutrition: { calories: 130, protein: 3, carbs: 28, fat: 0 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -342,10 +480,13 @@ export const dietPlans = [
       {
         name: "Breakfast",
         foods: [
-          { fdcId: 8120, name: "Oats" }
-        ]
-      }
-    ]
+          {
+            name: "Oats",
+            nutrition: { calories: 389, protein: 17, carbs: 66, fat: 7 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -359,10 +500,13 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 171077, name: "Chicken" }
-        ]
-      }
-    ]
+          {
+            name: "Chicken Breast",
+            nutrition: { calories: 165, protein: 31, carbs: 0, fat: 4 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -376,10 +520,13 @@ export const dietPlans = [
       {
         name: "Dinner",
         foods: [
-          { fdcId: 173410, name: "Salmon" }
-        ]
-      }
-    ]
+          {
+            name: "Salmon",
+            nutrition: { calories: 208, protein: 20, carbs: 0, fat: 13 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -393,10 +540,13 @@ export const dietPlans = [
       {
         name: "Lunch",
         foods: [
-          { fdcId: 172475, name: "Tofu" }
-        ]
-      }
-    ]
+          {
+            name: "Tofu",
+            nutrition: { calories: 76, protein: 8, carbs: 2, fat: 4 },
+          },
+        ],
+      },
+    ],
   },
 
   {
@@ -410,9 +560,12 @@ export const dietPlans = [
       {
         name: "Dinner",
         foods: [
-          { fdcId: 170379, name: "Egg" }
-        ]
-      }
-    ]
-  }
+          {
+            name: "Egg",
+            nutrition: { calories: 155, protein: 13, carbs: 1, fat: 11 },
+          },
+        ],
+      },
+    ],
+  },
 ];

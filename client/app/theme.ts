@@ -1,4 +1,4 @@
-import { createTheme, MantineColorsTuple } from '@mantine/core'
+import { MantineColorsTuple, createTheme } from '@mantine/core'
 
 // Cobalt blue palette generated around #00167a
 const cobaltBlue: MantineColorsTuple = [

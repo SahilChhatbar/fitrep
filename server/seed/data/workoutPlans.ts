@@ -2,7 +2,6 @@ export const workoutPlans = [
   // BEGINNER (1–10)
 
   {
-    id: "full_body_3_day_basic",
     name: "3-Day Full Body Beginner",
     level: "beginner",
     goal: "general_fitness",
@@ -13,37 +12,115 @@ export const workoutPlans = [
         day: "Day 1",
         focus: "Full Body",
         exercises: [
-          { wgerId: 345, name: "Squat" },
-          { wgerId: 285, name: "Bench Press" },
-          { wgerId: 84, name: "Row" },
-          { wgerId: 109, name: "Overhead Press" }
-        ]
+          {
+            name: "Squat",
+            details: {
+              description:
+                "A compound lower body exercise targeting quads, hamstrings and glutes.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Bench Press",
+            details: {
+              description:
+                "A compound upper body push exercise targeting the chest.",
+              muscles: ["Chest", "Triceps", "Front Deltoid"],
+            },
+          },
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull exercise targeting the upper back.",
+              muscles: ["Lats", "Rhomboids", "Biceps"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description:
+                "A compound shoulder press targeting deltoids and triceps.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+        ],
       },
       {
         day: "Day 2",
         focus: "Full Body",
         exercises: [
-          { wgerId: 183, name: "Deadlift" },
-          { wgerId: 132, name: "Pull Up" },
-          { wgerId: 301, name: "Dumbbell Curl" },
-          { wgerId: 302, name: "Tricep Pushdown" }
-        ]
+          {
+            name: "Deadlift",
+            details: {
+              description:
+                "A compound hip hinge targeting the posterior chain.",
+              muscles: ["Hamstrings", "Glutes", "Lower Back"],
+            },
+          },
+          {
+            name: "Pull Up",
+            details: {
+              description:
+                "A bodyweight pull exercise targeting lats and biceps.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+          {
+            name: "Dumbbell Curl",
+            details: {
+              description: "An isolation exercise for the biceps.",
+              muscles: ["Biceps"],
+            },
+          },
+          {
+            name: "Tricep Pushdown",
+            details: {
+              description: "A cable isolation exercise for the triceps.",
+              muscles: ["Triceps"],
+            },
+          },
+        ],
       },
       {
         day: "Day 3",
         focus: "Full Body",
         exercises: [
-          { wgerId: 345, name: "Squat" },
-          { wgerId: 285, name: "Bench Press" },
-          { wgerId: 84, name: "Row" },
-          { wgerId: 201, name: "Plank" }
-        ]
-      }
-    ]
+          {
+            name: "Squat",
+            details: {
+              description:
+                "A compound lower body exercise targeting quads, hamstrings and glutes.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Bench Press",
+            details: {
+              description:
+                "A compound upper body push exercise targeting the chest.",
+              muscles: ["Chest", "Triceps", "Front Deltoid"],
+            },
+          },
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull exercise targeting the upper back.",
+              muscles: ["Lats", "Rhomboids", "Biceps"],
+            },
+          },
+          {
+            name: "Plank",
+            details: {
+              description: "A core stability exercise.",
+              muscles: ["Core", "Abs"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "full_body_2_day_minimal",
     name: "2-Day Full Body Minimal",
     level: "beginner",
     goal: "fat_loss",
@@ -54,25 +131,65 @@ export const workoutPlans = [
         day: "Day 1",
         focus: "Full Body",
         exercises: [
-          { wgerId: 345, name: "Squat" },
-          { wgerId: 285, name: "Bench Press" },
-          { wgerId: 84, name: "Row" }
-        ]
+          {
+            name: "Squat",
+            details: {
+              description:
+                "A compound lower body exercise targeting quads, hamstrings and glutes.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Bench Press",
+            details: {
+              description:
+                "A compound upper body push exercise targeting the chest.",
+              muscles: ["Chest", "Triceps", "Front Deltoid"],
+            },
+          },
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull exercise targeting the upper back.",
+              muscles: ["Lats", "Rhomboids", "Biceps"],
+            },
+          },
+        ],
       },
       {
         day: "Day 2",
         focus: "Full Body",
         exercises: [
-          { wgerId: 183, name: "Deadlift" },
-          { wgerId: 132, name: "Pull Up" },
-          { wgerId: 109, name: "Overhead Press" }
-        ]
-      }
-    ]
+          {
+            name: "Deadlift",
+            details: {
+              description:
+                "A compound hip hinge targeting the posterior chain.",
+              muscles: ["Hamstrings", "Glutes", "Lower Back"],
+            },
+          },
+          {
+            name: "Pull Up",
+            details: {
+              description:
+                "A bodyweight pull exercise targeting lats and biceps.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description:
+                "A compound shoulder press targeting deltoids and triceps.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "bodyweight_home",
     name: "Bodyweight Home Plan",
     level: "beginner",
     goal: "fat_loss",
@@ -83,17 +200,40 @@ export const workoutPlans = [
         day: "Day 1",
         focus: "Bodyweight",
         exercises: [
-          { wgerId: 201, name: "Push Up" },
-          { wgerId: 202, name: "Bodyweight Squat" },
-          { wgerId: 203, name: "Plank" },
-          { wgerId: 204, name: "Lunges" }
-        ]
-      }
-    ]
+          {
+            name: "Push Up",
+            details: {
+              description: "A bodyweight chest and tricep exercise.",
+              muscles: ["Chest", "Triceps", "Front Deltoid"],
+            },
+          },
+          {
+            name: "Bodyweight Squat",
+            details: {
+              description: "A bodyweight lower body movement.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Plank",
+            details: {
+              description: "A core stability exercise.",
+              muscles: ["Core", "Abs"],
+            },
+          },
+          {
+            name: "Lunges",
+            details: {
+              description: "A unilateral lower body exercise.",
+              muscles: ["Quadriceps", "Glutes", "Hamstrings"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "dumbbell_beginner",
     name: "Dumbbell Beginner",
     level: "beginner",
     goal: "muscle_gain",
@@ -104,17 +244,41 @@ export const workoutPlans = [
         day: "Day 1",
         focus: "Full Body",
         exercises: [
-          { wgerId: 310, name: "Dumbbell Bench" },
-          { wgerId: 311, name: "Dumbbell Row" },
-          { wgerId: 312, name: "Goblet Squat" },
-          { wgerId: 313, name: "Shoulder Press" }
-        ]
-      }
-    ]
+          {
+            name: "Dumbbell Bench Press",
+            details: {
+              description: "A dumbbell pressing movement for the chest.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Dumbbell Row",
+            details: {
+              description: "A unilateral back exercise with dumbbells.",
+              muscles: ["Lats", "Biceps", "Rhomboids"],
+            },
+          },
+          {
+            name: "Goblet Squat",
+            details: {
+              description:
+                "A squat variation holding a dumbbell at chest height.",
+              muscles: ["Quadriceps", "Glutes"],
+            },
+          },
+          {
+            name: "Dumbbell Shoulder Press",
+            details: {
+              description: "A dumbbell pressing movement for the shoulders.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "machine_beginner",
     name: "Machine Beginner",
     level: "beginner",
     goal: "general_fitness",
@@ -125,17 +289,41 @@ export const workoutPlans = [
         day: "Day 1",
         focus: "Machines",
         exercises: [
-          { wgerId: 401, name: "Leg Press" },
-          { wgerId: 402, name: "Chest Press" },
-          { wgerId: 403, name: "Lat Pulldown" },
-          { wgerId: 404, name: "Leg Curl" }
-        ]
-      }
-    ]
+          {
+            name: "Leg Press",
+            details: {
+              description:
+                "A machine lower body press targeting quads and glutes.",
+              muscles: ["Quadriceps", "Glutes"],
+            },
+          },
+          {
+            name: "Chest Press Machine",
+            details: {
+              description: "A machine chest press for beginners.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Lat Pulldown",
+            details: {
+              description: "A cable machine pull targeting the lats.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+          {
+            name: "Leg Curl",
+            details: {
+              description: "A machine isolation exercise for the hamstrings.",
+              muscles: ["Hamstrings"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "upper_lower_3_day",
     name: "Upper Lower Beginner",
     level: "beginner",
     goal: "muscle_gain",
@@ -146,25 +334,64 @@ export const workoutPlans = [
         day: "Upper",
         focus: "Upper Body",
         exercises: [
-          { wgerId: 285, name: "Bench" },
-          { wgerId: 84, name: "Row" },
-          { wgerId: 109, name: "Press" }
-        ]
+          {
+            name: "Bench Press",
+            details: {
+              description:
+                "A compound upper body push exercise targeting the chest.",
+              muscles: ["Chest", "Triceps", "Front Deltoid"],
+            },
+          },
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull exercise targeting the upper back.",
+              muscles: ["Lats", "Rhomboids", "Biceps"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description:
+                "A compound shoulder press targeting deltoids and triceps.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+        ],
       },
       {
         day: "Lower",
         focus: "Lower Body",
         exercises: [
-          { wgerId: 345, name: "Squat" },
-          { wgerId: 183, name: "Deadlift" },
-          { wgerId: 204, name: "Lunges" }
-        ]
-      }
-    ]
+          {
+            name: "Squat",
+            details: {
+              description:
+                "A compound lower body exercise targeting quads, hamstrings and glutes.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Deadlift",
+            details: {
+              description:
+                "A compound hip hinge targeting the posterior chain.",
+              muscles: ["Hamstrings", "Glutes", "Lower Back"],
+            },
+          },
+          {
+            name: "Lunges",
+            details: {
+              description: "A unilateral lower body exercise.",
+              muscles: ["Quadriceps", "Glutes", "Hamstrings"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "beginner_strength",
     name: "Beginner Strength",
     level: "beginner",
     goal: "strength",
@@ -175,16 +402,36 @@ export const workoutPlans = [
         day: "Day 1",
         focus: "Strength",
         exercises: [
-          { wgerId: 345, name: "Squat" },
-          { wgerId: 285, name: "Bench" },
-          { wgerId: 183, name: "Deadlift" }
-        ]
-      }
-    ]
+          {
+            name: "Squat",
+            details: {
+              description:
+                "A compound lower body exercise targeting quads, hamstrings and glutes.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Bench Press",
+            details: {
+              description:
+                "A compound upper body push exercise targeting the chest.",
+              muscles: ["Chest", "Triceps", "Front Deltoid"],
+            },
+          },
+          {
+            name: "Deadlift",
+            details: {
+              description:
+                "A compound hip hinge targeting the posterior chain.",
+              muscles: ["Hamstrings", "Glutes", "Lower Back"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "fat_loss_circuit",
     name: "Fat Loss Circuit",
     level: "beginner",
     goal: "fat_loss",
@@ -195,17 +442,40 @@ export const workoutPlans = [
         day: "Circuit",
         focus: "Full Body",
         exercises: [
-          { wgerId: 201, name: "Push Up" },
-          { wgerId: 202, name: "Squat" },
-          { wgerId: 500, name: "Cycling" },
-          { wgerId: 203, name: "Plank" }
-        ]
-      }
-    ]
+          {
+            name: "Push Up",
+            details: {
+              description: "A bodyweight chest and tricep exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Bodyweight Squat",
+            details: {
+              description: "A bodyweight lower body movement.",
+              muscles: ["Quadriceps", "Glutes"],
+            },
+          },
+          {
+            name: "Cycling",
+            details: {
+              description: "Cardio on a stationary or outdoor bike.",
+              muscles: ["Quadriceps", "Hamstrings", "Calves"],
+            },
+          },
+          {
+            name: "Plank",
+            details: {
+              description: "A core stability exercise.",
+              muscles: ["Core", "Abs"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "beginner_cardio_strength",
     name: "Cardio + Strength",
     level: "beginner",
     goal: "fat_loss",
@@ -216,16 +486,33 @@ export const workoutPlans = [
         day: "Day 1",
         focus: "Mixed",
         exercises: [
-          { wgerId: 500, name: "Cycling" },
-          { wgerId: 201, name: "Push Up" },
-          { wgerId: 202, name: "Squat" }
-        ]
-      }
-    ]
+          {
+            name: "Cycling",
+            details: {
+              description: "Cardio on a stationary or outdoor bike.",
+              muscles: ["Quadriceps", "Hamstrings", "Calves"],
+            },
+          },
+          {
+            name: "Push Up",
+            details: {
+              description: "A bodyweight chest and tricep exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Bodyweight Squat",
+            details: {
+              description: "A bodyweight lower body movement.",
+              muscles: ["Quadriceps", "Glutes"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "full_body_progression",
     name: "Full Body Progression",
     level: "beginner",
     goal: "muscle_gain",
@@ -234,20 +521,39 @@ export const workoutPlans = [
     schedule: [
       {
         day: "Day 1",
-        focus: "Full",
+        focus: "Full Body",
         exercises: [
-          { wgerId: 345, name: "Squat" },
-          { wgerId: 285, name: "Bench" },
-          { wgerId: 84, name: "Row" }
-        ]
-      }
-    ]
+          {
+            name: "Squat",
+            details: {
+              description:
+                "A compound lower body exercise targeting quads, hamstrings and glutes.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Bench Press",
+            details: {
+              description:
+                "A compound upper body push exercise targeting the chest.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull exercise targeting the upper back.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   // INTERMEDIATE (11–20)
 
   {
-    id: "ppl_3_day",
     name: "Push Pull Legs",
     level: "intermediate",
     goal: "muscle_gain",
@@ -256,261 +562,708 @@ export const workoutPlans = [
     schedule: [
       {
         day: "Push",
-        focus: "Chest/Shoulders",
+        focus: "Chest/Shoulders/Triceps",
         exercises: [
-          { wgerId: 285, name: "Bench" },
-          { wgerId: 109, name: "Press" },
-          { wgerId: 302, name: "Triceps" }
-        ]
+          {
+            name: "Bench Press",
+            details: {
+              description:
+                "A compound upper body push exercise targeting the chest.",
+              muscles: ["Chest", "Triceps", "Front Deltoid"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description:
+                "A compound shoulder press targeting deltoids and triceps.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+          {
+            name: "Tricep Pushdown",
+            details: {
+              description: "A cable isolation exercise for the triceps.",
+              muscles: ["Triceps"],
+            },
+          },
+        ],
       },
       {
         day: "Pull",
-        focus: "Back",
+        focus: "Back/Biceps",
         exercises: [
-          { wgerId: 84, name: "Row" },
-          { wgerId: 132, name: "Pull Up" },
-          { wgerId: 301, name: "Curl" }
-        ]
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull exercise targeting the upper back.",
+              muscles: ["Lats", "Rhomboids", "Biceps"],
+            },
+          },
+          {
+            name: "Pull Up",
+            details: {
+              description:
+                "A bodyweight pull exercise targeting lats and biceps.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+          {
+            name: "Dumbbell Curl",
+            details: {
+              description: "An isolation exercise for the biceps.",
+              muscles: ["Biceps"],
+            },
+          },
+        ],
       },
       {
         day: "Legs",
-        focus: "Lower",
+        focus: "Lower Body",
         exercises: [
-          { wgerId: 345, name: "Squat" },
-          { wgerId: 183, name: "Deadlift" }
-        ]
-      }
-    ]
+          {
+            name: "Squat",
+            details: {
+              description:
+                "A compound lower body exercise targeting quads, hamstrings and glutes.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Deadlift",
+            details: {
+              description:
+                "A compound hip hinge targeting the posterior chain.",
+              muscles: ["Hamstrings", "Glutes", "Lower Back"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "upper_lower_4_day",
     name: "Upper Lower Split",
     level: "intermediate",
     goal: "strength",
     daysPerWeek: 4,
     split: "upper_lower",
     schedule: [
-      { day: "Upper", focus: "Upper", exercises: [{ wgerId: 285, name: "Bench" }] },
-      { day: "Lower", focus: "Lower", exercises: [{ wgerId: 345, name: "Squat" }] }
-    ]
+      {
+        day: "Upper A",
+        focus: "Upper Body",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description:
+                "A compound upper body push exercise targeting the chest.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull exercise targeting the upper back.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+        ],
+      },
+      {
+        day: "Lower A",
+        focus: "Lower Body",
+        exercises: [
+          {
+            name: "Squat",
+            details: {
+              description: "A compound lower body exercise.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Leg Press",
+            details: {
+              description: "A machine lower body press.",
+              muscles: ["Quadriceps", "Glutes"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "ppl_5_day",
     name: "PPL Hybrid",
     level: "intermediate",
     goal: "muscle_gain",
     daysPerWeek: 5,
     split: "hybrid",
     schedule: [
-      { day: "Push", focus: "Push", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Push",
+        focus: "Push",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound upper body push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Incline Dumbbell Press",
+            details: {
+              description: "An incline press for upper chest emphasis.",
+              muscles: ["Upper Chest", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "full_body_4_day",
     name: "Full Body 4 Day",
     level: "intermediate",
     goal: "strength",
     daysPerWeek: 4,
     split: "full_body",
     schedule: [
-      { day: "Day 1", focus: "Full", exercises: [{ wgerId: 345, name: "Squat" }] }
-    ]
+      {
+        day: "Day 1",
+        focus: "Full Body",
+        exercises: [
+          {
+            name: "Squat",
+            details: {
+              description: "A compound lower body exercise.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "strength_4_day",
     name: "4 Day Strength",
     level: "intermediate",
     goal: "strength",
     daysPerWeek: 4,
     split: "upper_lower",
     schedule: [
-      { day: "Upper", focus: "Upper", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Upper",
+        focus: "Upper Body",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description: "A shoulder press.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "hypertrophy_4_day",
     name: "Hypertrophy Split",
     level: "intermediate",
     goal: "muscle_gain",
     daysPerWeek: 4,
     split: "bro_split",
     schedule: [
-      { day: "Chest", focus: "Chest", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Chest",
+        focus: "Chest",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound chest press.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Incline Dumbbell Press",
+            details: {
+              description: "Upper chest emphasis.",
+              muscles: ["Upper Chest", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "athletic_training",
     name: "Athletic Training",
     level: "intermediate",
     goal: "general_fitness",
     daysPerWeek: 4,
     split: "hybrid",
     schedule: [
-      { day: "Day 1", focus: "Athletic", exercises: [{ wgerId: 600, name: "Sprint" }] }
-    ]
+      {
+        day: "Day 1",
+        focus: "Athletic",
+        exercises: [
+          {
+            name: "Sprint",
+            details: {
+              description: "High intensity running for speed and conditioning.",
+              muscles: ["Quadriceps", "Hamstrings", "Calves"],
+            },
+          },
+          {
+            name: "Box Jump",
+            details: {
+              description: "An explosive plyometric exercise.",
+              muscles: ["Quadriceps", "Glutes", "Calves"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "ppl_rotational",
     name: "Rotational PPL",
     level: "intermediate",
     goal: "muscle_gain",
     daysPerWeek: 4,
     split: "ppl",
     schedule: [
-      { day: "Push", focus: "Push", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Push",
+        focus: "Push",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Lateral Raise",
+            details: {
+              description: "An isolation exercise for the side deltoids.",
+              muscles: ["Side Deltoid"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "upper_lower_volume",
     name: "Upper Lower Volume",
     level: "intermediate",
     goal: "muscle_gain",
     daysPerWeek: 5,
     split: "upper_lower",
     schedule: [
-      { day: "Upper", focus: "Upper", exercises: [{ wgerId: 84, name: "Row" }] }
-    ]
+      {
+        day: "Upper",
+        focus: "Upper Body",
+        exercises: [
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull exercise.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+          {
+            name: "Pull Up",
+            details: {
+              description: "A bodyweight pull.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "ppl_ul_hybrid",
     name: "PPL + UL Hybrid",
     level: "intermediate",
     goal: "muscle_gain",
     daysPerWeek: 5,
     split: "hybrid",
     schedule: [
-      { day: "Push", focus: "Push", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Push",
+        focus: "Push",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description: "A shoulder press.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   // ADVANCED (21–30)
 
   {
-    id: "ppl_6_day",
     name: "PPL Advanced",
     level: "advanced",
     goal: "muscle_gain",
     daysPerWeek: 6,
     split: "ppl",
     schedule: [
-      { day: "Push", focus: "Push", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Push",
+        focus: "Chest/Shoulders/Triceps",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description: "A shoulder press.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+          {
+            name: "Tricep Pushdown",
+            details: { description: "Tricep isolation.", muscles: ["Triceps"] },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "bro_split_5_day",
     name: "Bro Split",
     level: "advanced",
     goal: "hypertrophy",
     daysPerWeek: 5,
     split: "bro_split",
     schedule: [
-      { day: "Chest", focus: "Chest", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Chest",
+        focus: "Chest",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound chest press.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Incline Dumbbell Press",
+            details: {
+              description: "Upper chest emphasis.",
+              muscles: ["Upper Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Cable Fly",
+            details: {
+              description: "A cable isolation exercise for the chest.",
+              muscles: ["Chest"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "bro_split_6_day",
     name: "Bro Split 6 Day",
     level: "advanced",
     goal: "hypertrophy",
     daysPerWeek: 6,
     split: "bro_split",
     schedule: [
-      { day: "Back", focus: "Back", exercises: [{ wgerId: 84, name: "Row" }] }
-    ]
+      {
+        day: "Back",
+        focus: "Back",
+        exercises: [
+          {
+            name: "Deadlift",
+            details: {
+              description: "A compound hip hinge.",
+              muscles: ["Hamstrings", "Glutes", "Lower Back"],
+            },
+          },
+          {
+            name: "Barbell Row",
+            details: {
+              description: "A compound pull.",
+              muscles: ["Lats", "Rhomboids", "Biceps"],
+            },
+          },
+          {
+            name: "Pull Up",
+            details: {
+              description: "A bodyweight pull.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "powerbuilding",
     name: "Powerbuilding",
     level: "advanced",
     goal: "strength",
     daysPerWeek: 5,
     split: "hybrid",
     schedule: [
-      { day: "Day 1", focus: "Power", exercises: [{ wgerId: 183, name: "Deadlift" }] }
-    ]
+      {
+        day: "Day 1",
+        focus: "Power",
+        exercises: [
+          {
+            name: "Deadlift",
+            details: {
+              description: "A compound hip hinge.",
+              muscles: ["Hamstrings", "Glutes", "Lower Back"],
+            },
+          },
+          {
+            name: "Squat",
+            details: {
+              description: "A compound lower body exercise.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "full_body_5_day",
     name: "Full Body Advanced",
     level: "advanced",
     goal: "strength",
     daysPerWeek: 5,
     split: "full_body",
     schedule: [
-      { day: "Day 1", focus: "Full", exercises: [{ wgerId: 345, name: "Squat" }] }
-    ]
+      {
+        day: "Day 1",
+        focus: "Full Body",
+        exercises: [
+          {
+            name: "Squat",
+            details: {
+              description: "A compound lower body exercise.",
+              muscles: ["Quadriceps", "Hamstrings", "Glutes"],
+            },
+          },
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Deadlift",
+            details: {
+              description: "A compound hip hinge.",
+              muscles: ["Hamstrings", "Glutes", "Lower Back"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "upper_lower_6_day",
     name: "Upper Lower Advanced",
     level: "advanced",
     goal: "strength",
     daysPerWeek: 6,
     split: "upper_lower",
     schedule: [
-      { day: "Upper", focus: "Upper", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Upper",
+        focus: "Upper Body",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Weighted Pull Up",
+            details: {
+              description: "A weighted bodyweight pull.",
+              muscles: ["Lats", "Biceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "push_pull_only",
     name: "Push Pull Split",
     level: "advanced",
     goal: "strength",
     daysPerWeek: 4,
     split: "ppl",
     schedule: [
-      { day: "Push", focus: "Push", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Push",
+        focus: "Push",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description: "A shoulder press.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "athlete_split",
     name: "Athlete Split",
     level: "advanced",
     goal: "general_fitness",
     daysPerWeek: 5,
     split: "hybrid",
     schedule: [
-      { day: "Day 1", focus: "Performance", exercises: [{ wgerId: 700, name: "Sprint" }] }
-    ]
+      {
+        day: "Day 1",
+        focus: "Performance",
+        exercises: [
+          {
+            name: "Sprint",
+            details: {
+              description: "High intensity running for conditioning.",
+              muscles: ["Quadriceps", "Hamstrings", "Calves"],
+            },
+          },
+          {
+            name: "Box Jump",
+            details: {
+              description: "An explosive plyometric.",
+              muscles: ["Quadriceps", "Glutes", "Calves"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "bodybuilding_volume",
     name: "High Volume Bodybuilding",
     level: "advanced",
     goal: "hypertrophy",
     daysPerWeek: 6,
     split: "bro_split",
     schedule: [
-      { day: "Chest", focus: "Chest", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
+      {
+        day: "Chest",
+        focus: "Chest",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound chest press.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Incline Dumbbell Press",
+            details: {
+              description: "Upper chest emphasis.",
+              muscles: ["Upper Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Pec Deck",
+            details: {
+              description: "A machine chest fly.",
+              muscles: ["Chest"],
+            },
+          },
+        ],
+      },
+    ],
   },
 
   {
-    id: "advanced_hybrid",
     name: "Advanced Hybrid",
     level: "advanced",
     goal: "muscle_gain",
     daysPerWeek: 5,
     split: "hybrid",
     schedule: [
-      { day: "Push", focus: "Push", exercises: [{ wgerId: 285, name: "Bench" }] }
-    ]
-  }
+      {
+        day: "Push",
+        focus: "Push",
+        exercises: [
+          {
+            name: "Bench Press",
+            details: {
+              description: "A compound push exercise.",
+              muscles: ["Chest", "Triceps"],
+            },
+          },
+          {
+            name: "Overhead Press",
+            details: {
+              description: "A shoulder press.",
+              muscles: ["Deltoids", "Triceps"],
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];

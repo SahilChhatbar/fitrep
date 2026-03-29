@@ -8,9 +8,14 @@ export type WorkoutGoal =
   | "general_fitness"
   | "hypertrophy";
 
+interface ExerciseDetails {
+  description?: string;
+  muscles?: string[];
+}
+
 interface Exercise {
-  wgerId: number;
   name: string;
+  details?: ExerciseDetails;
 }
 
 interface DayPlan {
@@ -30,12 +35,20 @@ export interface WorkoutDocument extends Document {
   updatedAt: Date;
 }
 
+const ExerciseDetailsSchema = new Schema<ExerciseDetails>(
+  {
+    description: { type: String },
+    muscles: { type: [String] },
+  },
+  { _id: false },
+);
+
 const ExerciseSchema = new Schema<Exercise>(
   {
-    wgerId: { type: Number, required: true },
     name: { type: String, required: true },
+    details: { type: ExerciseDetailsSchema },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const DaySchema = new Schema<DayPlan>(
@@ -47,7 +60,7 @@ const DaySchema = new Schema<DayPlan>(
       validate: [(val: Exercise[]) => val.length > 0, "At least one exercise"],
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const WorkoutSchema = new Schema<WorkoutDocument>(
@@ -75,16 +88,19 @@ const WorkoutSchema = new Schema<WorkoutDocument>(
     split: { type: String, required: true },
     schedule: {
       type: [DaySchema],
-      validate: [(val: DayPlan[]) => val.length > 0, "At least one day required"],
+      validate: [
+        (val: DayPlan[]) => val.length > 0,
+        "At least one day required",
+      ],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-//filtering
+
 WorkoutSchema.index({ level: 1, goal: 1 });
 
 export default mongoose.model<WorkoutDocument>(
   "Workout",
   WorkoutSchema,
-  "workouts"
+  "workouts",
 );

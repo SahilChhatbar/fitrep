@@ -3,9 +3,16 @@ import mongoose, { Schema, Document } from "mongoose";
 export type DietType = "Vegetarian" | "Non-Vegetarian" | "Vegan";
 export type DietGoal = "fat_loss" | "muscle_gain" | "maintenance";
 
+interface FoodNutrition {
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
+}
+
 interface Food {
-  fdcId: number;
   name: string;
+  nutrition?: FoodNutrition;
 }
 
 interface Meal {
@@ -29,12 +36,22 @@ export interface DietDocument extends Document {
   updatedAt: Date;
 }
 
+const FoodNutritionSchema = new Schema<FoodNutrition>(
+  {
+    calories: { type: Number },
+    protein: { type: Number },
+    carbs: { type: Number },
+    fat: { type: Number },
+  },
+  { _id: false },
+);
+
 const FoodSchema = new Schema<Food>(
   {
-    fdcId: { type: Number, required: true },
     name: { type: String, required: true },
+    nutrition: { type: FoodNutritionSchema },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const MealSchema = new Schema<Meal>(
@@ -45,7 +62,7 @@ const MealSchema = new Schema<Meal>(
       validate: [(val: Food[]) => val.length > 0, "At least one food required"],
     },
   },
-  { _id: false }
+  { _id: false },
 );
 
 const DietSchema = new Schema<DietDocument>(
@@ -53,7 +70,7 @@ const DietSchema = new Schema<DietDocument>(
     id: {
       type: String,
       required: true,
-      unique: true, // ensures no duplicates
+      unique: true,
       index: true,
     },
     name: { type: String, required: true, index: true },
@@ -80,9 +97,9 @@ const DietSchema = new Schema<DietDocument>(
       validate: [(val: Meal[]) => val.length > 0, "At least one meal required"],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
-//filtering
+
 DietSchema.index({ goal: 1, calories: 1 });
 
 export default mongoose.model<DietDocument>("Diet", DietSchema, "diets");
