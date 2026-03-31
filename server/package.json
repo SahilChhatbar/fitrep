@@ -15,7 +15,7 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "server": "ts-node index.ts",
+    "server": "node --loader ts-node/esm index.ts",
     "seed": "ts-node seed/seedAll.ts"
   }
 }
