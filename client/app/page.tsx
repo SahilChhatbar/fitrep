@@ -1,9 +1,23 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button, Card, Group, Stack, Text, Title } from '@mantine/core'
 import logo from '@/public/logo.svg'
+import { useEffect } from 'react'
+import { useDiets } from '@/features/diet/useDiet'
 
 export default function Home() {
+  const { data, isLoading, error } = useDiets({
+    page: 1,
+    limit: 10,
+  });
+  console.log(data)
+  useEffect(() => {
+    if (data) {
+      console.log('CLIENT DIETS:', data);
+    }
+  }, [data]);
   return (
     <Stack
       align="center"
@@ -47,7 +61,7 @@ export default function Home() {
             <Stack>
               <Text size="lg">Get a diet plan, suitable for your goals.</Text>
               <Link href="/diet">
-                <Button>Get Started</Button>
+                <Button >Get Started</Button>
               </Link>
             </Stack>
           </Card>

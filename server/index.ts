@@ -3,14 +3,19 @@ import mongoose from "mongoose"
 import dotenv from "dotenv"
 import workoutRoutes from "./routes/workoutRoutes.ts"
 import dietRoutes from "./routes/dietRoutes.ts"
-
+import cors from "cors"
 dotenv.config()
 
 const app = express()
 const PORT = 5001
 
 app.use(express.json())
-
+app.use(
+  cors({
+    origin: 'http://localhost:3001',
+    credentials: true,
+  })
+);
 const MONGODB_URI = process.env.MONGODB_URI
 
 if (!MONGODB_URI) {
@@ -25,8 +30,8 @@ mongoose.connect(MONGODB_URI)
     process.exit(1)
   })
 
-app.use('/api/workouts', workoutRoutes)
-app.use('/api/diets', dietRoutes)
+app.use('/api/workouts', workoutRoutes) // subject to change
+app.use('/api/diets', dietRoutes) // subject to change
 
 app.listen(PORT, () => {
   console.log(`server running on http://localhost:${PORT}`)
