@@ -4,7 +4,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button, Card, Group, Stack, Text, Title } from '@mantine/core'
 import logo from '@/public/logo.svg'
-import { useEffect } from 'react'
 import { useDiets } from '@/features/diet/useDiet'
 
 export default function Home() {
@@ -13,11 +12,6 @@ export default function Home() {
     limit: 10,
   });
   console.log(data)
-  useEffect(() => {
-    if (data) {
-      console.log('CLIENT DIETS:', data);
-    }
-  }, [data]);
   return (
     <Stack
       align="center"
