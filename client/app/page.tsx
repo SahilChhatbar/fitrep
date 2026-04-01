@@ -5,13 +5,19 @@ import Link from 'next/link'
 import { Button, Card, Group, Stack, Text, Title } from '@mantine/core'
 import logo from '@/public/logo.svg'
 import { useDiets } from '@/features/diet/useDiet'
+import { useWorkouts } from '@/features/workout/useWorkout'
 
 export default function Home() {
-  const { data, isLoading, error } = useDiets({
+  const { data: dietData, isLoading, error } = useDiets({
     page: 1,
     limit: 10,
   });
-  console.log(data)
+  console.log("diets", dietData)
+  const { data: workoutData, isLoading: workoutIsLoading, error: workoutError } = useWorkouts({
+    page: 1,
+    limit: 10,
+  });
+  console.log("workouts", workoutData)
   return (
     <Stack
       align="center"

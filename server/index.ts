@@ -30,8 +30,8 @@ mongoose.connect(MONGODB_URI)
     process.exit(1)
   })
 
-app.use('/api/workouts', workoutRoutes) // subject to change
-app.use('/api/diets', dietRoutes) // subject to change
+app.use('/api/workouts', workoutRoutes)
+app.use('/api/diets', dietRoutes)
 
 app.listen(PORT, () => {
   console.log(`server running on http://localhost:${PORT}`)

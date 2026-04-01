@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'FitRep - Fitness tracked.',
+  title: 'FitRep - Fitness, tracked.',
   description: 'Your personal fitness tracker',
 }
 
