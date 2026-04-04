@@ -10,12 +10,12 @@ import progressRoutes from "./routes/progressRoutes.ts";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT ?? 5001;
+const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.CLIENT_ORIGIN ?? "http://localhost:3001",
+    origin: process.env.CLIENT_ORIGIN,
     credentials: true,
   }),
 );
@@ -45,7 +45,7 @@ mongoose
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/diets", dietRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/progress", progressRoutes);
 
 // ─── Health check ─────────────────────────────────────────────────────────────

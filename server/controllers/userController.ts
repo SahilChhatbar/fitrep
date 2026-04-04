@@ -43,9 +43,15 @@ export const signup = async (req: AuthRequest, res: Response) => {
 
 export const login = async (req: AuthRequest, res: Response) => {
   try {
-    const { email, password } = req.body as LoginInput;
+    const { identifier, password } = req.body as LoginInput;
 
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({
+      $or: [
+        { email: identifier.toLowerCase() },
+        { name: identifier },
+      ],
+    }).select("+password");
+
     if (!user || !(await user.comparePassword(password))) {
       res.status(401).json({ message: "Invalid email or password" });
       return;
