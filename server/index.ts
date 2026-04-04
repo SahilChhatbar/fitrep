@@ -58,6 +58,6 @@ app.use((_req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-const server = app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log("server running on port", PORT);
 });
