@@ -15,16 +15,16 @@
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.5.0",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14",
-    "ts-node": "^10.9.2"
+    "nodemon": "^3.1.14"
   },
   "scripts": {
     "server": "node --loader ts-node/esm index.ts",
-    "seed": "ts-node seed/seedAll.ts",
-    "build": "tsc",
-    "start": "node dist/index.js"
+    "seed": "node --loader ts-node/esm seed/seedAll.ts",
+    "build": "echo 'no build step'",
+    "start": "node --loader ts-node/esm index.ts"
   }
 }
