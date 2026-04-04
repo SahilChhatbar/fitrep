@@ -23,6 +23,7 @@
   },
   "scripts": {
     "server": "node --loader ts-node/esm index.ts",
-    "seed": "ts-node seed/seedAll.ts"
+    "seed": "ts-node seed/seedAll.ts",
+    "build": "tsc"
   }
 }
