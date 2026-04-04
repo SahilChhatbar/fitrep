@@ -16,7 +16,7 @@ const Sidebar = ({ toggle }: SidebarProps): React.JSX.Element => {
   const navItems: NavItem[] = [
     { href: '/dashboard', label: 'Dashboard' },
     { href: '/workouts', label: 'Workouts' },
-    { href: '/diet', label: 'Diet' },
+    { href: '/diets', label: 'Diet' },
   ]
   const handleLinkClick = () => {
     toggle()

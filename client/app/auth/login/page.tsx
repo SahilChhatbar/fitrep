@@ -65,7 +65,7 @@ export default function LoginPage() {
 
           {loginError && (
             <Text color="red" size="sm" mt="sm">
-              {(loginError as any)?.response?.data?.message || 'Login failed. Please check your credentials.'}
+              {loginError.response?.data?.message || 'Login failed. Please check your credentials.'}
             </Text>
           )}
 

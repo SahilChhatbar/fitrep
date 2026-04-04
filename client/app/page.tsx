@@ -3,21 +3,29 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { Button, Card, Group, Stack, Text, Title } from '@mantine/core'
-import logo from '@/public/logo.svg'
 import { useDiets } from '@/features/diet/useDiet'
 import { useWorkouts } from '@/features/workout/useWorkout'
+import logo from '@/public/logo.svg'
 
 export default function Home() {
-  const { data: dietData, isLoading, error } = useDiets({
+  const {
+    data: dietData,
+    isLoading,
+    error,
+  } = useDiets({
     page: 1,
     limit: 10,
-  });
-  console.log("diets", dietData)
-  const { data: workoutData, isLoading: workoutIsLoading, error: workoutError } = useWorkouts({
+  })
+  console.log('diets', dietData)
+  const {
+    data: workoutData,
+    isLoading: workoutIsLoading,
+    error: workoutError,
+  } = useWorkouts({
     page: 1,
     limit: 10,
-  });
-  console.log("workouts", workoutData)
+  })
+  console.log('workouts', workoutData)
   return (
     <Stack
       align="center"
@@ -61,7 +69,7 @@ export default function Home() {
             <Stack>
               <Text size="lg">Get a diet plan, suitable for your goals.</Text>
               <Link href="/diet">
-                <Button >Get Started</Button>
+                <Button>Get Started</Button>
               </Link>
             </Stack>
           </Card>

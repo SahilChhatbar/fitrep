@@ -1,15 +1,17 @@
 import { useRouter } from 'next/navigation'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { apiClient } from '@/lib/api-client'
+import { ApiError } from '@/lib/api-types'
 import { useAuthStore } from './authStore'
+import { AuthResponse, LoginRequest, SignupRequest } from './auth.types'
 
 export const useAuth = () => {
   const { setAuth, logout, user, token } = useAuthStore()
   const router = useRouter()
 
-  const loginMutation = useMutation({
-    mutationFn: async (data: any) => {
-      const response = await apiClient.post('/user/login', data)
+  const loginMutation = useMutation<AuthResponse, ApiError, LoginRequest>({
+    mutationFn: async (data: LoginRequest) => {
+      const response = await apiClient.post<AuthResponse>('/user/login', data)
       return response.data
     },
     onSuccess: (data) => {
@@ -18,9 +20,9 @@ export const useAuth = () => {
     },
   })
 
-  const signupMutation = useMutation({
-    mutationFn: async (data: any) => {
-      const response = await apiClient.post('/user/signup', data)
+  const signupMutation = useMutation<AuthResponse, ApiError, SignupRequest>({
+    mutationFn: async (data: SignupRequest) => {
+      const response = await apiClient.post<AuthResponse>('/user/signup', data)
       return response.data
     },
     onSuccess: (data) => {

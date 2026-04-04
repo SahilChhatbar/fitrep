@@ -19,6 +19,7 @@ export interface Meal {
 }
 
 export interface Diet {
+  _id: string
   id: string
   name: string
   goal: DietGoal

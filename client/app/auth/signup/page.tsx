@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import {
   Anchor,
   Button,
@@ -12,7 +13,6 @@ import {
   Title,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import Link from 'next/link'
 import { useAuth } from '@/features/auth/useAuth'
 
 export default function SignupPage() {
@@ -27,7 +27,8 @@ export default function SignupPage() {
     validate: {
       name: (value: string) => (value.length < 2 ? 'Name must be at least 2 characters' : null),
       email: (value: string) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email address'),
-      password: (value: string) => (value.length < 6 ? 'Password must be at least 6 characters' : null),
+      password: (value: string) =>
+        value.length < 6 ? 'Password must be at least 6 characters' : null,
     },
   })
 
@@ -36,18 +37,39 @@ export default function SignupPage() {
   }
 
   return (
-    <Container size={420} my={40}>
-      <Title ta="center" fw={900}>
+    <Container
+      size={420}
+      my={40}
+    >
+      <Title
+        ta="center"
+        fw={900}
+      >
         Create an account
       </Title>
-      <Text c="dimmed" size="sm" ta="center" mt={5}>
+      <Text
+        c="dimmed"
+        size="sm"
+        ta="center"
+        mt={5}
+      >
         Already have an account?{' '}
-        <Anchor size="sm" component={Link} href="/auth/login">
+        <Anchor
+          size="sm"
+          component={Link}
+          href="/auth/login"
+        >
           Sign In
         </Anchor>
       </Text>
 
-      <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+      <Paper
+        withBorder
+        shadow="md"
+        p={30}
+        mt={30}
+        radius="md"
+      >
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack>
             <TextInput
@@ -71,12 +93,21 @@ export default function SignupPage() {
           </Stack>
 
           {signupError && (
-            <Text color="red" size="sm" mt="sm">
-              {(signupError as any)?.response?.data?.message || 'Signup failed. Please try again.'}
+            <Text
+              color="red"
+              size="sm"
+              mt="sm"
+            >
+              {signupError.response?.data?.message || 'Signup failed. Please try again.'}
             </Text>
           )}
 
-          <Button type="submit" loading={isSigningUp} fullWidth mt="xl">
+          <Button
+            type="submit"
+            loading={isSigningUp}
+            fullWidth
+            mt="xl"
+          >
             Register
           </Button>
         </form>

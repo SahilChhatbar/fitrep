@@ -25,7 +25,7 @@ export interface DayPlan {
 }
 
 export interface Workout {
-  id: string
+  _id: string
   name: string
   level: WorkoutLevel
   goal: WorkoutGoal
