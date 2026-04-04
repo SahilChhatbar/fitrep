@@ -5,6 +5,7 @@ import cors from "cors";
 import workoutRoutes from "./routes/workoutRoutes.ts";
 import dietRoutes from "./routes/dietRoutes.ts";
 import userRoutes from "./routes/userRoutes.ts";
+import progressRoutes from "./routes/progressRoutes.ts";
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ mongoose
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/diets", dietRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/progress", progressRoutes);
 
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get("/health", (_req, res) => {

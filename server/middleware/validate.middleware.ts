@@ -1,23 +1,35 @@
 import { Request, Response, NextFunction } from "express";
+import { ZodSchema, ZodError } from "zod";
 
+// Validates req.body
 export const validate =
-  (schema: any) => (req: Request, res: Response, next: NextFunction) => {
+  (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
     const result = schema.safeParse(req.body);
-
     if (!result.success) {
-      const errors = result.error.issues.map((issue: any) => ({
-        field: issue.path.join("."),
-        message: issue.message,
+      const errors = (result.error as ZodError).errors.map((e) => ({
+        field: e.path.join("."),
+        message: e.message,
       }));
-
-      return res.status(400).json({
-        message: "Validation failed",
-        errors,
-      });
+      res.status(400).json({ message: "Validation failed", errors });
+      return;
     }
-
-    // replace body with parsed data (important for coercion)
     req.body = result.data;
+    next();
+  };
 
+// Validates req.query
+export const validateQuery =
+  (schema: ZodSchema) => (req: Request, res: Response, next: NextFunction) => {
+    const result = schema.safeParse(req.query);
+    if (!result.success) {
+      const errors = (result.error as ZodError).errors.map((e) => ({
+        field: e.path.join("."),
+        message: e.message,
+      }));
+      res.status(400).json({ message: "Invalid query parameters", errors });
+      return;
+    }
+    // Attach parsed query to req so controllers get coerced types
+    (req as Request & { parsedQuery: unknown }).parsedQuery = result.data;
     next();
   };
