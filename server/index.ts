@@ -12,6 +12,11 @@ dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 
+console.log("Starting server...");
+console.log("PORT:", process.env.PORT);
+console.log("MONGODB_URI exists:", !!process.env.MONGODB_URI);
+console.log("JWT_SECRET exists:", !!process.env.JWT_SECRET);
+
 app.use(express.json());
 app.use(
   cors({
@@ -20,7 +25,6 @@ app.use(
   }),
 );
 
-// ─── Env guards ───────────────────────────────────────────────────────────────
 const { MONGODB_URI, JWT_SECRET } = process.env;
 
 if (!MONGODB_URI) {
@@ -33,31 +37,28 @@ if (!JWT_SECRET) {
   process.exit(1);
 }
 
-// ─── DB ───────────────────────────────────────────────────────────────────────
-mongoose
-  .connect(MONGODB_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => {
-    console.error("MongoDB connection error:", err);
-    process.exit(1);
-  });
-
-// ─── Routes ───────────────────────────────────────────────────────────────────
 app.use("/api/workouts", workoutRoutes);
 app.use("/api/diets", dietRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/progress", progressRoutes);
 
-// ─── Health check ─────────────────────────────────────────────────────────────
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
-// ─── 404 fallback ─────────────────────────────────────────────────────────────
 app.use((_req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log("server running on port", PORT);
-});
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log("server running on port", PORT);
+    });
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+    process.exit(1);
+  });
