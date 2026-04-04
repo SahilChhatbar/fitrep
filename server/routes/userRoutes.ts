@@ -11,7 +11,7 @@ import {
   getWorkoutLog,
 } from "../controllers/userController.ts";
 import { authMiddleware } from "../middleware/auth.middleware.ts";
-import { validate } from "../middleware/user.validate.middleware.ts";
+import { validate } from "../middleware/validate.middleware.ts";
 import {
   signupSchema,
   loginSchema,
