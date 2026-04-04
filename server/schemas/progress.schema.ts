@@ -1,5 +1,22 @@
 import { z } from "zod";
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/**
+ * Derive a YYYY-MM-DD dayKey from a Date, optionally shifted by a UTC-offset
+ * in minutes (positive = east of UTC, e.g. IST = +330).
+ *
+ * Why: toISOString() is always UTC. A user in UTC+5:30 logging at 11 pm local
+ * time would get tomorrow's UTC date, breaking streak logic and the one-per-day
+ * uniqueness constraint.
+ *
+ * We store dayKey alongside date so all streak / overlap math stays consistent.
+ */
+export function toDayKey(date: Date, utcOffsetMinutes = 0): string {
+  const shifted = new Date(date.getTime() + utcOffsetMinutes * 60_000);
+  return shifted.toISOString().split("T")[0];
+}
+
 // ─── Check-In ─────────────────────────────────────────────────────────────────
 
 export const checkInSchema = z
@@ -9,6 +26,12 @@ export const checkInSchema = z
       .optional()
       .transform((v) => (v ? new Date(v) : new Date()))
       .refine((d) => !isNaN(d.getTime()), { message: "Invalid date" }),
+    /**
+     * Client should send their UTC offset in minutes so dayKey is computed
+     * in the user's local calendar day, not UTC.
+     * Defaults to 0 (UTC) if omitted.
+     */
+    utcOffsetMinutes: z.number().int().min(-720).max(840).default(0),
     weight: z
       .number({ message: "Weight must be a number" })
       .positive("Weight must be positive")
@@ -39,6 +62,8 @@ export const workoutSessionSchema = z.object({
     .optional()
     .transform((v) => (v ? new Date(v) : new Date()))
     .refine((d) => !isNaN(d.getTime()), { message: "Invalid date" }),
+  /** See utcOffsetMinutes note above */
+  utcOffsetMinutes: z.number().int().min(-720).max(840).default(0),
   durationMinutes: z
     .number({ message: "Duration must be a number" })
     .int("Duration must be a whole number")
@@ -48,14 +73,14 @@ export const workoutSessionSchema = z.object({
   notes: z.string().max(500, "Notes must be under 500 characters").optional(),
 });
 
-// ─── Query params for history ─────────────────────────────────────────────────
+// ─── History query ────────────────────────────────────────────────────────────
 
 export const historyQuerySchema = z.object({
   limit: z
     .string()
     .optional()
     .transform((v) => (v ? parseInt(v, 10) : 30))
-    .refine((n) => n > 0 && n <= 100, { message: "Limit must be 1-100" }),
+    .refine((n) => n > 0 && n <= 100, { message: "Limit must be 1–100" }),
   skip: z
     .string()
     .optional()

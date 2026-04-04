@@ -1,11 +1,12 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 // ─── Body Check-In ────────────────────────────────────────────────────────────
-// Logged periodically (daily/weekly) by the user
 
 export interface CheckInDocument extends Document {
   userId: mongoose.Types.ObjectId;
   date: Date;
+  /** YYYY-MM-DD in UTC — used for one-per-day uniqueness and streak calculation */
+  dayKey: string;
   weight?: number; // kg
   bodyFat?: number; // percentage
   notes?: string;
@@ -28,11 +29,19 @@ const CheckInSchema = new Schema<CheckInDocument>(
       required: true,
       default: Date.now,
     },
+    // Derived from date on save — used for uniqueness and streak math
+    dayKey: {
+      type: String, // "YYYY-MM-DD"
+      required: true,
+    },
     weight: { type: Number, min: 0 },
     bodyFat: { type: Number, min: 0, max: 100 },
     notes: { type: String, maxlength: 500 },
-    // Snapshot of what plan the user was on at check-in time
-    activeDietId: { type: Schema.Types.ObjectId, ref: "Diet", default: null },
+    activeDietId: {
+      type: Schema.Types.ObjectId,
+      ref: "Diet",
+      default: null,
+    },
     activeWorkoutId: {
       type: Schema.Types.ObjectId,
       ref: "Workout",
@@ -42,7 +51,9 @@ const CheckInSchema = new Schema<CheckInDocument>(
   { timestamps: true },
 );
 
-// One check-in per user per day
+// ONE check-in per user per calendar day — enforced at DB level
+CheckInSchema.index({ userId: 1, dayKey: 1 }, { unique: true });
+// Fast reverse-chron fetching
 CheckInSchema.index({ userId: 1, date: -1 });
 
 export const CheckIn = mongoose.model<CheckInDocument>(
@@ -52,13 +63,14 @@ export const CheckIn = mongoose.model<CheckInDocument>(
 );
 
 // ─── Workout Session ──────────────────────────────────────────────────────────
-// Logged each time a user completes a workout day
 
 export interface WorkoutSessionDocument extends Document {
   userId: mongoose.Types.ObjectId;
   workoutId: mongoose.Types.ObjectId;
   dayCompleted: string; // e.g. "Day 1", "Push A"
   completedAt: Date;
+  /** YYYY-MM-DD in UTC — used for streak and overlap calculation */
+  dayKey: string;
   durationMinutes?: number;
   notes?: string;
   createdAt: Date;
@@ -80,12 +92,22 @@ const WorkoutSessionSchema = new Schema<WorkoutSessionDocument>(
     },
     dayCompleted: { type: String, required: true },
     completedAt: { type: Date, default: Date.now },
-    durationMinutes: { type: Number, min: 0 },
+    dayKey: {
+      type: String, // "YYYY-MM-DD"
+      required: true,
+    },
+    durationMinutes: { type: Number, min: 1 },
     notes: { type: String, maxlength: 500 },
   },
   { timestamps: true },
 );
 
+// Prevent logging the exact same workout day more than once per calendar day
+WorkoutSessionSchema.index(
+  { userId: 1, workoutId: 1, dayCompleted: 1, dayKey: 1 },
+  { unique: true },
+);
+// Fast reverse-chron fetching
 WorkoutSessionSchema.index({ userId: 1, completedAt: -1 });
 WorkoutSessionSchema.index({ userId: 1, workoutId: 1 });
 
