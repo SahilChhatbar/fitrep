@@ -5,8 +5,8 @@ export interface UserDocument extends Document {
   name: string;
   email: string;
   password: string;
-  activeDietId?: mongoose.Types.ObjectId;
-  activeWorkoutId?: mongoose.Types.ObjectId;
+  activeDietId?: mongoose.Types.ObjectId | null;
+  activeWorkoutId?: mongoose.Types.ObjectId | null;
   tracking: {
     dietLog: {
       dietId: mongoose.Types.ObjectId;

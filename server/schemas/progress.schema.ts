@@ -10,12 +10,12 @@ export const checkInSchema = z
       .transform((v) => (v ? new Date(v) : new Date()))
       .refine((d) => !isNaN(d.getTime()), { message: "Invalid date" }),
     weight: z
-      .number({ invalid_type_error: "Weight must be a number" })
+      .number({ message: "Weight must be a number" })
       .positive("Weight must be positive")
       .max(500, "Weight seems too high")
       .optional(),
     bodyFat: z
-      .number({ invalid_type_error: "Body fat must be a number" })
+      .number({ message: "Body fat must be a number" })
       .min(1, "Body fat must be at least 1%")
       .max(70, "Body fat must be under 70%")
       .optional(),
@@ -40,7 +40,7 @@ export const workoutSessionSchema = z.object({
     .transform((v) => (v ? new Date(v) : new Date()))
     .refine((d) => !isNaN(d.getTime()), { message: "Invalid date" }),
   durationMinutes: z
-    .number({ invalid_type_error: "Duration must be a number" })
+    .number({ message: "Duration must be a number" })
     .int("Duration must be a whole number")
     .min(1, "Duration must be at least 1 minute")
     .max(600, "Duration seems too long")

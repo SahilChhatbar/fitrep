@@ -9,8 +9,8 @@ export interface CheckInDocument extends Document {
   weight?: number; // kg
   bodyFat?: number; // percentage
   notes?: string;
-  activeDietId?: mongoose.Types.ObjectId;
-  activeWorkoutId?: mongoose.Types.ObjectId;
+  activeDietId?: mongoose.Types.ObjectId | null;
+  activeWorkoutId?: mongoose.Types.ObjectId | null;
   createdAt: Date;
   updatedAt: Date;
 }

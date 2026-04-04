@@ -32,8 +32,8 @@ export const logCheckIn = async (req: AuthRequest, res: Response) => {
       weight,
       bodyFat,
       notes,
-      activeDietId: user.activeDietId ?? null,
-      activeWorkoutId: user.activeWorkoutId ?? null,
+      activeDietId: user.activeDietId ?? undefined,
+      activeWorkoutId: user.activeWorkoutId ?? undefined,
     });
 
     res.status(201).json({ message: "Check-in logged", checkIn });
