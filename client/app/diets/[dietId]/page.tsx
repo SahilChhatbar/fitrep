@@ -21,13 +21,20 @@ import {
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api-client';
-import { ArrowLeft, Check } from 'lucide-react';
+import { ArrowLeft, Check, Plus } from 'lucide-react';
 import { Diet, Meal, Food } from '@/features/diet/diet.types';
+import { useAuth } from '@/features/auth/useAuth';
+import { useUserTracking } from '@/features/user/useUserTracking';
+import { notifications } from '@mantine/notifications';
 
 const DietDetailPage = () => {
   const params = useParams();
   const router = useRouter();
   const dietId = params.dietId as string;
+  const { token, user } = useAuth();
+  const { assignDiet, isAssigningDiet } = useUserTracking();
+  const activeId = typeof user?.activeDietId === 'string' ? user.activeDietId : user?.activeDietId?._id;
+  const isActive = activeId === dietId;
 
   const { data: diet, isLoading, error } = useQuery({
     queryKey: ['diet', dietId],
@@ -84,16 +91,43 @@ const DietDetailPage = () => {
                 </Badge>
               </Group>
             </Stack>
-            <Paper p="md" radius="md" bg="orange.1" withBorder>
-              <Stack gap={0} align="center">
-                <Text fw={900} size="xl" c="orange.9">
-                  {diet.calories}
-                </Text>
-                <Text size="xs" fw={700} c="orange.9">
-                  KCAL / DAY
-                </Text>
-              </Stack>
-            </Paper>
+            <Stack gap="md" align="flex-end">
+              <Paper p="md" radius="md" bg="orange.1" withBorder>
+                <Stack gap={0} align="center">
+                  <Text fw={900} size="xl" c="orange.9">
+                    {diet.calories}
+                  </Text>
+                  <Text size="xs" fw={700} c="orange.9">
+                    KCAL / DAY
+                  </Text>
+                </Stack>
+              </Paper>
+              {token && (
+                <Button
+                  leftSection={isActive ? <Check size={16} /> : <Plus size={16} />}
+                  color={isActive ? 'green' : 'blue'}
+                  variant={isActive ? 'light' : 'filled'}
+                  loading={isAssigningDiet}
+                  disabled={isActive}
+                  onClick={() => {
+                    assignDiet(
+                      { dietId },
+                      {
+                        onSuccess: () => {
+                          notifications.show({
+                            title: 'Success',
+                            message: 'Diet plan assigned successfully!',
+                            color: 'green',
+                          });
+                        },
+                      }
+                    );
+                  }}
+                >
+                  {isActive ? 'Active Plan' : 'Assign to Me'}
+                </Button>
+              )}
+            </Stack>
           </Group>
 
           <Divider my="xl" label="Nutritional Breakdown" labelPosition="center" />

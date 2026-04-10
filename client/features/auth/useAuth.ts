@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { apiClient } from '@/lib/api-client'
@@ -40,6 +41,15 @@ export const useAuth = () => {
     enabled: !!token,
   })
 
+  // Sync store with query data
+  useEffect(() => {
+    if (getMeQuery.data && token) {
+      setAuth(getMeQuery.data, token)
+    }
+  }, [getMeQuery.data, token, setAuth])
+
+  const currentUser = getMeQuery.data ?? user
+
   return {
     login: loginMutation.mutate,
     isLoggingIn: loginMutation.isPending,
@@ -47,7 +57,7 @@ export const useAuth = () => {
     signup: signupMutation.mutate,
     isSigningUp: signupMutation.isPending,
     signupError: signupMutation.error,
-    user,
+    user: currentUser,
     token,
     logout,
     getMeQuery,

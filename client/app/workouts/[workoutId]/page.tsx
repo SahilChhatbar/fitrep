@@ -17,14 +17,22 @@ import {
   Title,
 } from '@mantine/core'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft, Calendar } from 'lucide-react'
+import { ArrowLeft, Calendar, Check, Plus } from 'lucide-react'
 import { apiClient } from '@/lib/api-client'
 import { DayPlan, Exercise, Workout } from '@/features/workout/workout.types'
+import { useAuth } from '@/features/auth/useAuth'
+import { useUserTracking } from '@/features/user/useUserTracking'
+import { notifications } from '@mantine/notifications'
 
 const WorkoutDetailPage = () => {
   const params = useParams()
   const router = useRouter()
   const workoutId = params.workoutId as string
+  const { token, user } = useAuth()
+  const { assignWorkout, isAssigningWorkout } = useUserTracking()
+  const activeId =
+    typeof user?.activeWorkoutId === 'string' ? user.activeWorkoutId : user?.activeWorkoutId?._id
+  const isActive = activeId === workoutId
 
   const {
     data: workout,
@@ -122,23 +130,53 @@ const WorkoutDetailPage = () => {
               </Group>
             </Stack>
             <Stack
-              gap={4}
+              gap="md"
               align="flex-end"
             >
-              <Badge
-                variant="light"
-                color="gray"
-                size="xl"
+              <Stack
+                gap={4}
+                align="flex-end"
               >
-                {workout.daysPerWeek} Days / Week
-              </Badge>
-              <Text
-                size="sm"
-                fw={600}
-                c="dimmed"
-              >
-                Split: {workout.split}
-              </Text>
+                <Badge
+                  variant="light"
+                  color="gray"
+                  size="xl"
+                >
+                  {workout.daysPerWeek} Days / Week
+                </Badge>
+                <Text
+                  size="sm"
+                  fw={600}
+                  c="dimmed"
+                >
+                  Split: {workout.split}
+                </Text>
+              </Stack>
+              {token && (
+                <Button
+                  leftSection={isActive ? <Check size={16} /> : <Plus size={16} />}
+                  color={isActive ? 'green' : 'blue'}
+                  variant={isActive ? 'light' : 'filled'}
+                  loading={isAssigningWorkout}
+                  disabled={isActive}
+                  onClick={() => {
+                    assignWorkout(
+                      { workoutId },
+                      {
+                        onSuccess: () => {
+                          notifications.show({
+                            title: 'Success',
+                            message: 'Workout plan assigned successfully!',
+                            color: 'green',
+                          })
+                        },
+                      },
+                    )
+                  }}
+                >
+                  {isActive ? 'Active Plan' : 'Assign to Me'}
+                </Button>
+              )}
             </Stack>
           </Group>
         </Paper>

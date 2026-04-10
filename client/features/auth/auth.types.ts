@@ -2,8 +2,8 @@ export interface User {
   _id: string
   name: string
   email: string
-  activeDietId?: string | null
-  activeWorkoutId?: string | null
+  activeDietId?: string | { _id: string } | null
+  activeWorkoutId?: string | { _id: string } | null
   tracking: {
     dietLog: Array<{ dietId: string; assignedAt: string; note?: string }>
     workoutLog: Array<{ workoutId: string; assignedAt: string; note?: string }>
