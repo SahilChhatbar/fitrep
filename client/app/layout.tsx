@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { DM_Sans, DM_Serif_Display } from 'next/font/google'
 import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css'
 import AppLayout from '@/components/layout/AppLayout'
@@ -8,14 +8,15 @@ import { theme } from './theme'
 import { QueryProvider } from '@/provider/query-provider'
 import { AuthProvider } from '@/provider/auth-provider'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const dmSans = DM_Sans({
   subsets: ['latin'],
+  variable: '--font-dm-sans',
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const dmSerif = DM_Serif_Display({
   subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-dm-serif',
 })
 
 export const metadata: Metadata = {
@@ -29,11 +30,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
       <head>
         <ColorSchemeScript />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className="antialiased">
         <MantineProvider theme={theme}>
           <QueryProvider>
             <AuthProvider>
