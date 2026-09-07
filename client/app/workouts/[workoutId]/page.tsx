@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import {
   Alert,
@@ -20,7 +21,8 @@ import {
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft, BarChart, Calendar, Check, Dumbbell, Plus, Target } from 'lucide-react'
+import { ArrowLeft, BarChart, Calendar, Check, Dumbbell, Edit, Plus, Target } from 'lucide-react'
+import { WorkoutFormModal } from '@/components/WorkoutFormModal'
 import { useAuth } from '@/features/auth/useAuth'
 import { useUserTracking } from '@/features/user/useUserTracking'
 import { DayPlan, Exercise, Workout } from '@/features/workout/workout.types'
@@ -38,6 +40,7 @@ const WorkoutDetailPage = () => {
   const workoutId = params.workoutId as string
   const { token, user } = useAuth()
   const { assignWorkout, isAssigningWorkout } = useUserTracking()
+  const [editModalOpened, setEditModalOpened] = useState(false)
   const activeId =
     typeof user?.activeWorkoutId === 'string' ? user.activeWorkoutId : user?.activeWorkoutId?._id
   const isActive = activeId === workoutId
@@ -110,6 +113,12 @@ const WorkoutDetailPage = () => {
       size="lg"
       py="xl"
     >
+      <WorkoutFormModal
+        opened={editModalOpened}
+        onClose={() => setEditModalOpened(false)}
+        workoutToEdit={workout}
+      />
+
       <Button
         variant="subtle"
         leftSection={<ArrowLeft size={15} />}
@@ -205,36 +214,58 @@ const WorkoutDetailPage = () => {
                   >
                     {workout.split.replace('_', ' ')}
                   </Badge>
+                  {workout.uploadedByCoach && (
+                    <Badge
+                      color="violet"
+                      variant="light"
+                      size="md"
+                    >
+                      Uploaded by coach: {workout.uploadedByCoach}
+                    </Badge>
+                  )}
                 </Group>
               </Stack>
 
-              {token && (
-                <Button
-                  leftSection={isActive ? <Check size={15} /> : <Plus size={15} />}
-                  color={isActive ? 'teal' : 'cobaltBlue'}
-                  variant={isActive ? 'light' : 'filled'}
-                  loading={isAssigningWorkout}
-                  disabled={isActive}
-                  size="md"
-                  styles={{ root: { fontWeight: 700 } }}
-                  onClick={() => {
-                    assignWorkout(
-                      { workoutId },
-                      {
-                        onSuccess: () => {
-                          notifications.show({
-                            title: 'Plan assigned!',
-                            message: `${workout.name} is now your active workout.`,
-                            color: 'teal',
-                          })
+              <Group gap="sm">
+                {user?.role === 'coach' && (
+                  <Button
+                    variant="light"
+                    color="violet"
+                    size="md"
+                    leftSection={<Edit size={15} />}
+                    onClick={() => setEditModalOpened(true)}
+                  >
+                    Edit Plan
+                  </Button>
+                )}
+                {token && (
+                  <Button
+                    leftSection={isActive ? <Check size={15} /> : <Plus size={15} />}
+                    color={isActive ? 'teal' : 'cobaltBlue'}
+                    variant={isActive ? 'light' : 'filled'}
+                    loading={isAssigningWorkout}
+                    disabled={isActive}
+                    size="md"
+                    styles={{ root: { fontWeight: 700 } }}
+                    onClick={() => {
+                      assignWorkout(
+                        { workoutId },
+                        {
+                          onSuccess: () => {
+                            notifications.show({
+                              title: 'Plan assigned!',
+                              message: `${workout.name} is now your active workout.`,
+                              color: 'teal',
+                            })
+                          },
                         },
-                      },
-                    )
-                  }}
-                >
-                  {isActive ? 'Active Plan ✓' : 'Assign to Me'}
-                </Button>
-              )}
+                      )
+                    }}
+                  >
+                    {isActive ? 'Active Plan ✓' : 'Assign to Me'}
+                  </Button>
+                )}
+              </Group>
             </Group>
           </Box>
         </Paper>

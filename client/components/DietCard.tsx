@@ -21,9 +21,16 @@ const DietCard = ({ diet }: DietCardProps) => {
         </Badge>
       </Group>
 
-      <Badge variant="dot" color="blue" mb="md">
-        {diet.goal.replace('_', ' ')}
-      </Badge>
+      <Group gap="xs" mb="md">
+        <Badge variant="dot" color="blue">
+          {diet.goal.replace('_', ' ')}
+        </Badge>
+        {diet.uploadedByCoach && (
+          <Badge color="violet" variant="light" size="sm">
+            Uploaded by coach: {diet.uploadedByCoach}
+          </Badge>
+        )}
+      </Group>
 
       <Divider my="sm" />
 

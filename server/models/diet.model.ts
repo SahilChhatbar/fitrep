@@ -32,6 +32,7 @@ export interface DietDocument extends Document {
     fat: number;
   };
   meals: Meal[];
+  uploadedByCoach?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -96,6 +97,7 @@ const DietSchema = new Schema<DietDocument>(
       type: [MealSchema],
       validate: [(val: Meal[]) => val.length > 0, "At least one meal required"],
     },
+    uploadedByCoach: { type: String },
   },
   { timestamps: true },
 );

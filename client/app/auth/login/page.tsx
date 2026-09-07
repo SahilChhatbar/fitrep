@@ -10,6 +10,7 @@ import {
   Group,
   Paper,
   PasswordInput,
+  SegmentedControl,
   Stack,
   Text,
   TextInput,
@@ -27,6 +28,7 @@ export default function LoginPage() {
     initialValues: {
       identifier: '',
       password: '',
+      role: 'user' as 'user' | 'coach',
     },
     validate: {
       identifier: (value: string) => (value.length < 1 ? 'Name or Email is required' : null),
@@ -105,6 +107,21 @@ export default function LoginPage() {
         >
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Stack gap="md">
+              <Box>
+                <Text size="sm" fw={600} mb={6}>
+                  Sign in as
+                </Text>
+                <SegmentedControl
+                  fullWidth
+                  value={form.values.role}
+                  onChange={(val) => form.setFieldValue('role', val as 'user' | 'coach')}
+                  data={[
+                    { label: 'User / Athlete', value: 'user' },
+                    { label: 'Coach', value: 'coach' },
+                  ]}
+                  color="cobaltBlue"
+                />
+              </Box>
               <TextInput
                 label="Name or Email"
                 placeholder="john@example.com"

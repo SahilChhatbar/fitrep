@@ -8,6 +8,7 @@ import {
   Container,
   Paper,
   PasswordInput,
+  SegmentedControl,
   SimpleGrid,
   Stack,
   Text,
@@ -34,6 +35,7 @@ export default function SignupPage() {
       name: '',
       email: '',
       password: '',
+      role: 'user' as 'user' | 'coach',
     },
     validate: {
       name: (value: string) => (value.length < 2 ? 'Name must be at least 2 characters' : null),
@@ -182,6 +184,21 @@ export default function SignupPage() {
             >
               <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack gap="md">
+                  <Box>
+                    <Text size="sm" fw={600} mb={6}>
+                      Account Role
+                    </Text>
+                    <SegmentedControl
+                      fullWidth
+                      value={form.values.role}
+                      onChange={(val) => form.setFieldValue('role', val as 'user' | 'coach')}
+                      data={[
+                        { label: 'User / Athlete', value: 'user' },
+                        { label: 'Coach', value: 'coach' },
+                      ]}
+                      color="cobaltBlue"
+                    />
+                  </Box>
                   <TextInput
                     label="Full Name"
                     placeholder="John Doe"

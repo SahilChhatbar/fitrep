@@ -12,9 +12,9 @@ import type {
   AssignWorkoutInput,
 } from "../schemas/user.schema.ts";
 
-const signToken = (userId: string) => {
+const signToken = (userId: string, role: string) => {
   const secret = process.env.JWT_SECRET!;
-  return jwt.sign({ userId }, secret, {
+  return jwt.sign({ userId, role }, secret, {
     expiresIn: process.env.JWT_EXPIRES_IN ?? "7d",
   } as jwt.SignOptions);
 };
@@ -23,7 +23,7 @@ const signToken = (userId: string) => {
 
 export const signup = async (req: AuthRequest, res: Response) => {
   try {
-    const { name, email, password } = req.body as SignupInput;
+    const { name, email, password, role } = req.body as SignupInput;
 
     const existing = await User.findOne({ email });
     if (existing) {
@@ -31,8 +31,13 @@ export const signup = async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    const user = await User.create({ name, email, password });
-    const token = signToken(String(user._id));
+    const user = await User.create({
+      name,
+      email,
+      password,
+      role: role || "user",
+    });
+    const token = signToken(String(user._id), user.role);
 
     res.status(201).json({ token, user });
   } catch (error) {
@@ -57,7 +62,7 @@ export const login = async (req: AuthRequest, res: Response) => {
       return;
     }
 
-    const token = signToken(String(user._id));
+    const token = signToken(String(user._id), user.role);
 
     // Strip password before responding (toJSON handles this but be explicit)
     const userObj = user.toJSON();

@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import {
   Alert,
@@ -22,7 +22,8 @@ import {
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowLeft, Check, Flame, Plus, Salad } from 'lucide-react'
+import { ArrowLeft, Check, Edit, Flame, Plus, Salad } from 'lucide-react'
+import { DietFormModal } from '@/components/DietFormModal'
 import { useAuth } from '@/features/auth/useAuth'
 import { Diet, Food, Meal } from '@/features/diet/diet.types'
 import { useUserTracking } from '@/features/user/useUserTracking'
@@ -40,6 +41,7 @@ const DietDetailPage = () => {
   const dietId = params.dietId as string
   const { token, user } = useAuth()
   const { assignDiet, isAssigningDiet } = useUserTracking()
+  const [editModalOpened, setEditModalOpened] = useState(false)
   const activeId =
     typeof user?.activeDietId === 'string' ? user.activeDietId : user?.activeDietId?._id
   const isActive = activeId === dietId
@@ -111,6 +113,12 @@ const DietDetailPage = () => {
       size="lg"
       py="xl"
     >
+      <DietFormModal
+        opened={editModalOpened}
+        onClose={() => setEditModalOpened(false)}
+        dietToEdit={diet}
+      />
+
       <Button
         variant="subtle"
         leftSection={<ArrowLeft size={15} />}
@@ -197,36 +205,58 @@ const DietDetailPage = () => {
                   >
                     {diet.calories} kcal/day
                   </Badge>
+                  {diet.uploadedByCoach && (
+                    <Badge
+                      color="violet"
+                      variant="light"
+                      size="md"
+                    >
+                      Uploaded by coach: {diet.uploadedByCoach}
+                    </Badge>
+                  )}
                 </Group>
               </Stack>
 
-              {token && (
-                <Button
-                  leftSection={isActive ? <Check size={15} /> : <Plus size={15} />}
-                  color={isActive ? 'teal' : 'cobaltBlue'}
-                  variant={isActive ? 'light' : 'filled'}
-                  loading={isAssigningDiet}
-                  disabled={isActive}
-                  size="md"
-                  styles={{ root: { fontWeight: 700 } }}
-                  onClick={() => {
-                    assignDiet(
-                      { dietId },
-                      {
-                        onSuccess: () => {
-                          notifications.show({
-                            title: 'Diet assigned!',
-                            message: `${diet.name} is now your active plan.`,
-                            color: 'teal',
-                          })
+              <Group gap="sm">
+                {user?.role === 'coach' && (
+                  <Button
+                    variant="light"
+                    color="violet"
+                    size="md"
+                    leftSection={<Edit size={15} />}
+                    onClick={() => setEditModalOpened(true)}
+                  >
+                    Edit Plan
+                  </Button>
+                )}
+                {token && (
+                  <Button
+                    leftSection={isActive ? <Check size={15} /> : <Plus size={15} />}
+                    color={isActive ? 'teal' : 'cobaltBlue'}
+                    variant={isActive ? 'light' : 'filled'}
+                    loading={isAssigningDiet}
+                    disabled={isActive}
+                    size="md"
+                    styles={{ root: { fontWeight: 700 } }}
+                    onClick={() => {
+                      assignDiet(
+                        { dietId },
+                        {
+                          onSuccess: () => {
+                            notifications.show({
+                              title: 'Diet assigned!',
+                              message: `${diet.name} is now your active plan.`,
+                              color: 'teal',
+                            })
+                          },
                         },
-                      },
-                    )
-                  }}
-                >
-                  {isActive ? 'Active Plan ✓' : 'Assign to Me'}
-                </Button>
-              )}
+                      )
+                    }}
+                  >
+                    {isActive ? 'Active Plan ✓' : 'Assign to Me'}
+                  </Button>
+                )}
+              </Group>
             </Group>
 
             {/* Macros breakdown */}

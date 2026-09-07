@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Burger, Button, Group, Text, Menu, Avatar, ActionIcon } from '@mantine/core'
+import { Avatar, Badge, Burger, Button, Group, Menu, Text } from '@mantine/core'
 import logo from '@/public/logo.svg'
 import { useAuth } from '@/features/auth/useAuth'
 
@@ -58,10 +58,17 @@ const Header = ({ mobileOpened, toggleMobile, desktopOpened, toggleDesktop }: He
       </Group>
       <Group>
         {user ? (
-          <Group gap="sm">
-            <Text size="sm" fw={500} visibleFrom="xs">
-              {user.name}
-            </Text>
+          <Group gap="xs">
+            <Group gap={6} visibleFrom="xs">
+              <Text size="sm" fw={500}>
+                {user.name}
+              </Text>
+              {user.role === 'coach' && (
+                <Badge color="violet" variant="light" size="xs" radius="sm">
+                  Coach
+                </Badge>
+              )}
+            </Group>
             <Menu shadow="md" width={200}>
               <Menu.Target>
                 <Avatar color="cobaltBlue" radius="xl" style={{ cursor: 'pointer' }}>

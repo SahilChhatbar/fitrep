@@ -1,23 +1,28 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useAuthStore } from '@/features/auth/authStore'
 import * as api from './progress.api'
 import { CheckInInput, HistoryQuery, WorkoutSessionInput } from './progress.types'
 
 export const useProgress = (historyParams: HistoryQuery = { limit: 10, skip: 0 }) => {
   const queryClient = useQueryClient()
+  const token = useAuthStore((s) => s.token)
 
   const summaryQuery = useQuery({
     queryKey: ['progress-summary'],
     queryFn: api.getProgressSummary,
+    enabled: !!token,
   })
 
   const checkInHistoryQuery = useQuery({
     queryKey: ['check-in-history', historyParams],
     queryFn: () => api.getCheckInHistory(historyParams),
+    enabled: !!token,
   })
 
   const workoutHistoryQuery = useQuery({
     queryKey: ['workout-history', historyParams],
     queryFn: () => api.getWorkoutSessionHistory(historyParams),
+    enabled: !!token,
   })
 
   const logCheckInMutation = useMutation({

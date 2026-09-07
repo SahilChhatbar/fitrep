@@ -32,6 +32,7 @@ export interface Workout {
   daysPerWeek: number
   split: string
   schedule: DayPlan[]
+  uploadedByCoach?: string
   createdAt: string // ISO string from backend
   updatedAt: string
 }

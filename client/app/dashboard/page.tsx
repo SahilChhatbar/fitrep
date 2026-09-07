@@ -1,6 +1,8 @@
 'use client'
 
+import { useEffect } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import {
   Badge,
   Box,
@@ -29,6 +31,7 @@ import {
   Scale,
   TrendingUp,
 } from 'lucide-react'
+import { useAuthStore } from '@/features/auth/authStore'
 import { useProgress } from '@/features/progress/useProgress'
 
 const StatCard = ({
@@ -96,7 +99,17 @@ const StatCard = ({
 )
 
 const DashboardPage = () => {
+  const token = useAuthStore((s) => s.token)
+  const router = useRouter()
   const { summary, isLoadingSummary } = useProgress()
+
+  useEffect(() => {
+    if (!token) {
+      router.replace('/')
+    }
+  }, [token, router])
+
+  if (!token) return null
 
   if (isLoadingSummary) {
     return (

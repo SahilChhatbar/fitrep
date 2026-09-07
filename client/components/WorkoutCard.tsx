@@ -58,6 +58,15 @@ const WorkoutCard = ({ workout }: WorkoutCardProps) => {
         >
           {workout.daysPerWeek} Days/Week
         </Badge>
+        {workout.uploadedByCoach && (
+          <Badge
+            color="violet"
+            variant="light"
+            size="sm"
+          >
+            Uploaded by coach: {workout.uploadedByCoach}
+          </Badge>
+        )}
       </Group>
 
       <Text

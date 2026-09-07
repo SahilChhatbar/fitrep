@@ -33,6 +33,7 @@ export interface WorkoutDocument extends Document {
   daysPerWeek: number;
   split: string;
   schedule: DayPlan[];
+  uploadedByCoach?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -97,6 +98,7 @@ const WorkoutSchema = new Schema<WorkoutDocument>(
         "At least one day required",
       ],
     },
+    uploadedByCoach: { type: String },
   },
   { timestamps: true },
 );

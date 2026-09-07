@@ -31,6 +31,7 @@ export interface Diet {
     fat: number
   }
   meals: Meal[]
+  uploadedByCoach?: string
   createdAt: string // ISO string from backend
   updatedAt: string
 }

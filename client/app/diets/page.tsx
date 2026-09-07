@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import {
   Alert,
   Box,
+  Button,
   Center,
   Container,
   Group,
@@ -16,14 +17,18 @@ import {
   Title,
 } from '@mantine/core'
 import { useQuery } from '@tanstack/react-query'
-import { Salad, Search } from 'lucide-react'
+import { Plus, Salad, Search } from 'lucide-react'
 import DietCard from '@/components/DietCard'
+import { DietFormModal } from '@/components/DietFormModal'
+import { useAuth } from '@/features/auth/useAuth'
 import type { Diet } from '@/features/diet/diet.types'
 import { apiClient } from '@/lib/api-client'
 
 const DietsPage = () => {
+  const { user } = useAuth()
   const [goal, setGoal] = useState('all')
   const [search, setSearch] = useState('')
+  const [modalOpened, setModalOpened] = useState(false)
 
   const {
     data: diets,
@@ -90,6 +95,11 @@ const DietsPage = () => {
       size="lg"
       py="xl"
     >
+      <DietFormModal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
+
       <Stack
         gap="xl"
         className="page-enter"
@@ -116,36 +126,47 @@ const DietsPage = () => {
               pointerEvents: 'none',
             }}
           />
-          <Stack
-            gap="xs"
-            style={{ position: 'relative', zIndex: 1 }}
-          >
-            <Group gap="sm">
-              <Salad
-                size={24}
-                color="rgba(255,255,255,0.85)"
-              />
-              <Title
-                order={1}
-                c="white"
-                style={{
-                  fontFamily: 'DM Serif Display, serif',
-                  fontWeight: 400,
-                  fontSize: '1.8rem',
-                }}
-              >
-                Nutrition Plans
-              </Title>
-            </Group>
-            <Text
-              c="rgba(255,255,255,0.8)"
-              size="sm"
-              maw={480}
+          <Group justify="space-between" align="flex-start" style={{ position: 'relative', zIndex: 1 }}>
+            <Stack
+              gap="xs"
             >
-              Science-backed meal plans tailored to your goals. Every macro, every meal — planned
-              out for you.
-            </Text>
-          </Stack>
+              <Group gap="sm">
+                <Salad
+                  size={24}
+                  color="rgba(255,255,255,0.85)"
+                />
+                <Title
+                  order={1}
+                  c="white"
+                  style={{
+                    fontFamily: 'DM Serif Display, serif',
+                    fontWeight: 400,
+                    fontSize: '1.8rem',
+                  }}
+                >
+                  Nutrition Plans
+                </Title>
+              </Group>
+              <Text
+                c="rgba(255,255,255,0.8)"
+                size="sm"
+                maw={480}
+              >
+                Science-backed meal plans tailored to your goals. Every macro, every meal — planned
+                out for you.
+              </Text>
+            </Stack>
+            {user?.role === 'coach' && (
+              <Button
+                color="teal"
+                variant="white"
+                leftSection={<Plus size={16} />}
+                onClick={() => setModalOpened(true)}
+              >
+                Add Diet Plan
+              </Button>
+            )}
+          </Group>
         </Box>
 
         {/* Filters */}

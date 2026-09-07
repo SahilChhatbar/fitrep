@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { apiClient } from '@/lib/api-client'
 import { ApiError } from '@/lib/api-types'
 import { useAuthStore } from './authStore'
@@ -9,6 +9,7 @@ import { AuthResponse, LoginRequest, SignupRequest } from './auth.types'
 export const useAuth = () => {
   const { setAuth, logout, user, token } = useAuthStore()
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const loginMutation = useMutation<AuthResponse, ApiError, LoginRequest>({
     mutationFn: async (data: LoginRequest) => {
@@ -48,6 +49,12 @@ export const useAuth = () => {
     }
   }, [getMeQuery.data, token, setAuth])
 
+  const handleLogout = () => {
+    logout()
+    queryClient.clear()
+    router.push('/auth/login')
+  }
+
   const currentUser = getMeQuery.data ?? user
 
   return {
@@ -59,7 +66,7 @@ export const useAuth = () => {
     signupError: signupMutation.error,
     user: currentUser,
     token,
-    logout,
+    logout: handleLogout,
     getMeQuery,
   }
 }

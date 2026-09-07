@@ -4,6 +4,7 @@ import { useState } from 'react'
 import {
   Alert,
   Box,
+  Button,
   Center,
   Container,
   Group,
@@ -16,14 +17,18 @@ import {
   Title,
 } from '@mantine/core'
 import { useQuery } from '@tanstack/react-query'
-import { Dumbbell, Search } from 'lucide-react'
+import { Dumbbell, Plus, Search } from 'lucide-react'
 import WorkoutCard from '@/components/WorkoutCard'
+import { WorkoutFormModal } from '@/components/WorkoutFormModal'
+import { useAuth } from '@/features/auth/useAuth'
 import type { Workout } from '@/features/workout/workout.types'
 import { apiClient } from '@/lib/api-client'
 
 const Workouts = () => {
+  const { user } = useAuth()
   const [level, setLevel] = useState('all')
   const [search, setSearch] = useState('')
+  const [modalOpened, setModalOpened] = useState(false)
 
   const {
     data: workouts,
@@ -91,6 +96,11 @@ const Workouts = () => {
       size="lg"
       py="xl"
     >
+      <WorkoutFormModal
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+      />
+
       <Stack
         gap="xl"
         className="page-enter"
@@ -117,35 +127,46 @@ const Workouts = () => {
               pointerEvents: 'none',
             }}
           />
-          <Stack
-            gap="xs"
-            style={{ position: 'relative', zIndex: 1 }}
-          >
-            <Group gap="sm">
-              <Dumbbell
-                size={24}
-                color="rgba(255,255,255,0.8)"
-              />
-              <Title
-                order={1}
-                c="white"
-                style={{
-                  fontFamily: 'DM Serif Display, serif',
-                  fontWeight: 400,
-                  fontSize: '1.8rem',
-                }}
-              >
-                Workout Plans
-              </Title>
-            </Group>
-            <Text
-              c="rgba(255,255,255,0.75)"
-              size="sm"
-              maw={480}
+          <Group justify="space-between" align="flex-start" style={{ position: 'relative', zIndex: 1 }}>
+            <Stack
+              gap="xs"
             >
-              Expert-designed programs for every fitness level. Pick a plan and get started today.
-            </Text>
-          </Stack>
+              <Group gap="sm">
+                <Dumbbell
+                  size={24}
+                  color="rgba(255,255,255,0.8)"
+                />
+                <Title
+                  order={1}
+                  c="white"
+                  style={{
+                    fontFamily: 'DM Serif Display, serif',
+                    fontWeight: 400,
+                    fontSize: '1.8rem',
+                  }}
+                >
+                  Workout Plans
+                </Title>
+              </Group>
+              <Text
+                c="rgba(255,255,255,0.75)"
+                size="sm"
+                maw={480}
+              >
+                Expert-designed programs for every fitness level. Pick a plan and get started today.
+              </Text>
+            </Stack>
+            {user?.role === 'coach' && (
+              <Button
+                color="indigo"
+                variant="white"
+                leftSection={<Plus size={16} />}
+                onClick={() => setModalOpened(true)}
+              >
+                Add Workout Plan
+              </Button>
+            )}
+          </Group>
         </Box>
 
         {/* Filters */}
