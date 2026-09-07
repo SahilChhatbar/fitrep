@@ -20,8 +20,9 @@
     "typescript": "^5.9.3"
   },
   "scripts": {
-    "server": "node --loader ts-node/esm index.ts",
-    "seed": "node --loader ts-node/esm seed/seedAll.ts",
-    "build": "yarn install"
+    "server": "NODE_OPTIONS='--max-old-space-size=512' node --loader ts-node/esm --no-warnings index.ts",
+    "start": "NODE_OPTIONS='--max-old-space-size=512' node --loader ts-node/esm --no-warnings index.ts",
+    "seed": "node --loader ts-node/esm --no-warnings seed/seedAll.ts",
+    "build": "echo 'No compile needed'"
   }
 }
