@@ -1,8 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import {
   Alert,
+  Badge,
   Box,
   Button,
   Center,
@@ -17,7 +19,7 @@ import {
   Title,
 } from '@mantine/core'
 import { useQuery } from '@tanstack/react-query'
-import { Dumbbell, Plus, Search } from 'lucide-react'
+import { Dumbbell, Plus, Search, UserCheck } from 'lucide-react'
 import WorkoutCard from '@/components/WorkoutCard'
 import { WorkoutFormModal } from '@/components/WorkoutFormModal'
 import { useAuth } from '@/features/auth/useAuth'
@@ -26,9 +28,19 @@ import { apiClient } from '@/lib/api-client'
 
 const Workouts = () => {
   const { user } = useAuth()
+  const searchParams = useSearchParams()
+  const initialFilter = searchParams.get('filter') === 'my_plans' ? 'my_plans' : 'all'
+
+  const [scope, setScope] = useState<string>(initialFilter)
   const [level, setLevel] = useState('all')
   const [search, setSearch] = useState('')
   const [modalOpened, setModalOpened] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('filter') === 'my_plans') {
+      setScope('my_plans')
+    }
+  }, [searchParams])
 
   const {
     data: workouts,
@@ -43,13 +55,16 @@ const Workouts = () => {
   })
 
   const filtered = workouts?.filter((w) => {
+    const matchesScope =
+      scope === 'all' ||
+      (scope === 'my_plans' && w.uploadedByCoach === user?.name)
     const matchesLevel = level === 'all' || w.level === level
     const matchesSearch =
       !search ||
       w.name.toLowerCase().includes(search.toLowerCase()) ||
       w.goal.toLowerCase().includes(search.toLowerCase()) ||
       w.split.toLowerCase().includes(search.toLowerCase())
-    return matchesLevel && matchesSearch
+    return matchesScope && matchesLevel && matchesSearch
   })
 
   if (isLoading) {
@@ -176,19 +191,35 @@ const Workouts = () => {
           wrap="wrap"
           gap="sm"
         >
-          <SegmentedControl
-            value={level}
-            onChange={setLevel}
-            data={[
-              { label: 'All Levels', value: 'all' },
-              { label: 'Beginner', value: 'beginner' },
-              { label: 'Intermediate', value: 'intermediate' },
-              { label: 'Advanced', value: 'advanced' },
-            ]}
-            styles={{
-              root: { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' },
-            }}
-          />
+          <Group gap="sm" wrap="wrap">
+            {user?.role === 'coach' && (
+              <SegmentedControl
+                value={scope}
+                onChange={setScope}
+                data={[
+                  { label: 'All Plans', value: 'all' },
+                  { label: 'My Created Plans', value: 'my_plans' },
+                ]}
+                color="violet"
+                styles={{
+                  root: { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' },
+                }}
+              />
+            )}
+            <SegmentedControl
+              value={level}
+              onChange={setLevel}
+              data={[
+                { label: 'All Levels', value: 'all' },
+                { label: 'Beginner', value: 'beginner' },
+                { label: 'Intermediate', value: 'intermediate' },
+                { label: 'Advanced', value: 'advanced' },
+              ]}
+              styles={{
+                root: { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' },
+              }}
+            />
+          </Group>
           <TextInput
             placeholder="Search plans..."
             value={search}

@@ -72,15 +72,28 @@ export const workoutController = {
         return;
       }
 
-      const { name, level, goal, daysPerWeek, split, schedule } = req.body;
-
-      let uploadedByCoach = undefined;
-      if (req.userId) {
-        const coachUser = await User.findById(req.userId);
-        if (coachUser) {
-          uploadedByCoach = coachUser.name;
-        }
+      const existingWorkout = await Workout.findById(req.params.id);
+      if (!existingWorkout) {
+        res.status(404).json({ message: "Workout not found" });
+        return;
       }
+
+      let coachUser = undefined;
+      if (req.userId) {
+        coachUser = await User.findById(req.userId);
+      }
+
+      if (!coachUser || coachUser.role !== "coach") {
+        res.status(403).json({ message: "Access denied. Only coaches can edit workout plans." });
+        return;
+      }
+
+      if (existingWorkout.uploadedByCoach !== coachUser.name) {
+        res.status(403).json({ message: "You can only edit plans created by you." });
+        return;
+      }
+
+      const { name, level, goal, daysPerWeek, split, schedule } = req.body;
 
       const updatedFields: any = {
         ...(name && { name }),
@@ -89,22 +102,14 @@ export const workoutController = {
         ...(daysPerWeek !== undefined && { daysPerWeek }),
         ...(split && { split }),
         ...(schedule && { schedule }),
+        uploadedByCoach: coachUser.name,
       };
-
-      if (uploadedByCoach) {
-        updatedFields.uploadedByCoach = uploadedByCoach;
-      }
 
       const workout = await Workout.findByIdAndUpdate(
         req.params.id,
         updatedFields,
         { new: true, runValidators: true }
       );
-
-      if (!workout) {
-        res.status(404).json({ message: "Workout not found" });
-        return;
-      }
 
       res.json(workout);
     } catch (error) {

@@ -191,7 +191,7 @@ export default function Home() {
                       },
                     }}
                   >
-                    Browse Plans
+                    Browse Plans without Account
                   </Button>
                 </>
               ) : (

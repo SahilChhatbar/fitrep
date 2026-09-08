@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import {
   Alert,
@@ -218,7 +218,7 @@ const DietDetailPage = () => {
               </Stack>
 
               <Group gap="sm">
-                {user?.role === 'coach' && (
+                {user?.role === 'coach' && diet.uploadedByCoach === user.name && (
                   <Button
                     variant="light"
                     color="violet"

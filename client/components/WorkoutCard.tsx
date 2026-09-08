@@ -4,11 +4,16 @@ import Link from 'next/link'
 import { Badge, Button, Card, Divider, Group, Stack, Text } from '@mantine/core'
 import { Workout } from '@/features/workout/workout.types'
 
+import { useAuth } from '@/features/auth/useAuth'
+
 interface WorkoutCardProps {
   workout: Workout
 }
 
 const WorkoutCard = ({ workout }: WorkoutCardProps) => {
+  const { user } = useAuth()
+  const isCreatedByMe = user?.role === 'coach' && workout.uploadedByCoach === user.name
+
   const levelColors: Record<string, string> = {
     beginner: 'teal',
     intermediate: 'blue',
@@ -61,10 +66,10 @@ const WorkoutCard = ({ workout }: WorkoutCardProps) => {
         {workout.uploadedByCoach && (
           <Badge
             color="violet"
-            variant="light"
+            variant={isCreatedByMe ? 'filled' : 'light'}
             size="sm"
           >
-            Uploaded by coach: {workout.uploadedByCoach}
+            {isCreatedByMe ? 'Created by You' : `Coach: ${workout.uploadedByCoach}`}
           </Badge>
         )}
       </Group>

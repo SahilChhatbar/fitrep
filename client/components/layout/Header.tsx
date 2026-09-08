@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { Avatar, Badge, Burger, Button, Group, Menu, Text } from '@mantine/core'
+import { Avatar, Badge, Box, Burger, Button, Group, Menu, Stack, Text } from '@mantine/core'
+import { LogOut } from 'lucide-react'
 import logo from '@/public/logo.svg'
 import { useAuth } from '@/features/auth/useAuth'
 
@@ -9,10 +10,18 @@ interface HeaderProps {
   toggleMobile: () => void
   desktopOpened: boolean
   toggleDesktop: () => void
+  showNavbar?: boolean
 }
 
-const Header = ({ mobileOpened, toggleMobile, desktopOpened, toggleDesktop }: HeaderProps) => {
+const Header = ({
+  mobileOpened,
+  toggleMobile,
+  desktopOpened,
+  toggleDesktop,
+  showNavbar = true,
+}: HeaderProps) => {
   const { user, logout } = useAuth()
+  const isCoach = user?.role === 'coach'
 
   return (
     <Group
@@ -21,20 +30,24 @@ const Header = ({ mobileOpened, toggleMobile, desktopOpened, toggleDesktop }: He
       justify="space-between"
     >
       <Group>
-        <Burger
-          opened={mobileOpened}
-          onClick={toggleMobile}
-          hiddenFrom="sm"
-          size="sm"
-          color="cobaltBlue.9"
-        />
-        <Burger
-          opened={desktopOpened}
-          onClick={toggleDesktop}
-          visibleFrom="sm"
-          size="sm"
-          color="cobaltBlue.9"
-        />
+        {showNavbar && (
+          <>
+            <Burger
+              opened={mobileOpened}
+              onClick={toggleMobile}
+              hiddenFrom="sm"
+              size="sm"
+              color="cobaltBlue.9"
+            />
+            <Burger
+              opened={desktopOpened}
+              onClick={toggleDesktop}
+              visibleFrom="sm"
+              size="sm"
+              color="cobaltBlue.9"
+            />
+          </>
+        )}
         <Group
           align="flex-end"
           gap="xs"
@@ -59,30 +72,42 @@ const Header = ({ mobileOpened, toggleMobile, desktopOpened, toggleDesktop }: He
       <Group>
         {user ? (
           <Group gap="xs">
-            <Group gap={6} visibleFrom="xs">
-              <Text size="sm" fw={500}>
+            <Stack gap={2} align="flex-end" visibleFrom="xs">
+              <Text size="sm" fw={600} lh={1.2}>
                 {user.name}
               </Text>
-              {user.role === 'coach' && (
-                <Badge color="violet" variant="light" size="xs" radius="sm">
-                  Coach
-                </Badge>
-              )}
-            </Group>
-            <Menu shadow="md" width={200}>
+              <Badge
+                color={isCoach ? 'violet' : 'blue'}
+                variant="light"
+                size="xs"
+                radius="sm"
+                tt="capitalize"
+              >
+                {isCoach ? 'Coach' : 'User'}
+              </Badge>
+            </Stack>
+            <Menu shadow="md" width={220} position="bottom-end">
               <Menu.Target>
-                <Avatar color="cobaltBlue" radius="xl" style={{ cursor: 'pointer' }}>
-                  {user.name.charAt(0)}
-                </Avatar>
+                <Box style={{ cursor: 'pointer' }}>
+                  <Avatar color={isCoach ? 'violet' : 'cobaltBlue'} radius="xl">
+                    {user.name.charAt(0).toUpperCase()}
+                  </Avatar>
+                </Box>
               </Menu.Target>
 
               <Menu.Dropdown>
-                <Menu.Label>Application</Menu.Label>
-                <Menu.Item component={Link} href="/dashboard">
-                  Dashboard
-                </Menu.Item>
+                <Menu.Label>
+                  <Stack gap={2}>
+                    <Text fw={700} size="sm" c="dark">
+                      {user.name}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {user.email}
+                    </Text>
+                  </Stack>
+                </Menu.Label>
                 <Menu.Divider />
-                <Menu.Item color="red" onClick={() => logout()}>
+                <Menu.Item color="red" leftSection={<LogOut size={14} />} onClick={() => logout()}>
                   Logout
                 </Menu.Item>
               </Menu.Dropdown>

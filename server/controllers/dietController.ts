@@ -75,15 +75,28 @@ export const dietController = {
         return;
       }
 
-      const { name, goal, type, calories, macros, meals } = req.body;
-
-      let uploadedByCoach = undefined;
-      if (req.userId) {
-        const coachUser = await User.findById(req.userId);
-        if (coachUser) {
-          uploadedByCoach = coachUser.name;
-        }
+      const existingDiet = await Diet.findById(req.params.id);
+      if (!existingDiet) {
+        res.status(404).json({ message: "Diet not found" });
+        return;
       }
+
+      let coachUser = undefined;
+      if (req.userId) {
+        coachUser = await User.findById(req.userId);
+      }
+
+      if (!coachUser || coachUser.role !== "coach") {
+        res.status(403).json({ message: "Access denied. Only coaches can edit diet plans." });
+        return;
+      }
+
+      if (existingDiet.uploadedByCoach !== coachUser.name) {
+        res.status(403).json({ message: "You can only edit plans created by you." });
+        return;
+      }
+
+      const { name, goal, type, calories, macros, meals } = req.body;
 
       const updatedFields: any = {
         ...(name && { name }),
@@ -92,22 +105,14 @@ export const dietController = {
         ...(calories !== undefined && { calories }),
         ...(macros && { macros }),
         ...(meals && { meals }),
+        uploadedByCoach: coachUser.name,
       };
-
-      if (uploadedByCoach) {
-        updatedFields.uploadedByCoach = uploadedByCoach;
-      }
 
       const diet = await Diet.findByIdAndUpdate(
         req.params.id,
         updatedFields,
         { new: true, runValidators: true }
       );
-
-      if (!diet) {
-        res.status(404).json({ message: "Diet not found" });
-        return;
-      }
 
       res.json(diet);
     } catch (error) {

@@ -227,7 +227,7 @@ const WorkoutDetailPage = () => {
               </Stack>
 
               <Group gap="sm">
-                {user?.role === 'coach' && (
+                {user?.role === 'coach' && workout.uploadedByCoach === user.name && (
                   <Button
                     variant="light"
                     color="violet"

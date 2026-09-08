@@ -4,12 +4,16 @@ import React from 'react';
 import { Card, Text, Badge, Group, Stack, Button, Divider } from '@mantine/core';
 import Link from 'next/link';
 import { Diet } from '@/features/diet/diet.types';
+import { useAuth } from '@/features/auth/useAuth';
 
 interface DietCardProps {
   diet: Diet;
 }
 
 const DietCard = ({ diet }: DietCardProps) => {
+  const { user } = useAuth();
+  const isCreatedByMe = user?.role === 'coach' && diet.uploadedByCoach === user.name;
+
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Group justify="space-between" mb="xs">
@@ -26,8 +30,12 @@ const DietCard = ({ diet }: DietCardProps) => {
           {diet.goal.replace('_', ' ')}
         </Badge>
         {diet.uploadedByCoach && (
-          <Badge color="violet" variant="light" size="sm">
-            Uploaded by coach: {diet.uploadedByCoach}
+          <Badge
+            color="violet"
+            variant={isCreatedByMe ? 'filled' : 'light'}
+            size="sm"
+          >
+            {isCreatedByMe ? 'Created by You' : `Coach: ${diet.uploadedByCoach}`}
           </Badge>
         )}
       </Group>

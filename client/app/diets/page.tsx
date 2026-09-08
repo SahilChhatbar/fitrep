@@ -1,6 +1,7 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 import {
   Alert,
   Box,
@@ -26,9 +27,19 @@ import { apiClient } from '@/lib/api-client'
 
 const DietsPage = () => {
   const { user } = useAuth()
+  const searchParams = useSearchParams()
+  const initialFilter = searchParams.get('filter') === 'my_plans' ? 'my_plans' : 'all'
+
+  const [scope, setScope] = useState<string>(initialFilter)
   const [goal, setGoal] = useState('all')
   const [search, setSearch] = useState('')
   const [modalOpened, setModalOpened] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('filter') === 'my_plans') {
+      setScope('my_plans')
+    }
+  }, [searchParams])
 
   const {
     data: diets,
@@ -43,12 +54,15 @@ const DietsPage = () => {
   })
 
   const filtered = diets?.filter((d) => {
+    const matchesScope =
+      scope === 'all' ||
+      (scope === 'my_plans' && d.uploadedByCoach === user?.name)
     const matchesGoal = goal === 'all' || d.goal === goal
     const matchesSearch =
       !search ||
       d.name.toLowerCase().includes(search.toLowerCase()) ||
       d.type.toLowerCase().includes(search.toLowerCase())
-    return matchesGoal && matchesSearch
+    return matchesScope && matchesGoal && matchesSearch
   })
 
   if (isLoading) {
@@ -176,19 +190,35 @@ const DietsPage = () => {
           wrap="wrap"
           gap="sm"
         >
-          <SegmentedControl
-            value={goal}
-            onChange={setGoal}
-            data={[
-              { label: 'All Goals', value: 'all' },
-              { label: 'Fat Loss', value: 'fat_loss' },
-              { label: 'Muscle Gain', value: 'muscle_gain' },
-              { label: 'Maintenance', value: 'maintenance' },
-            ]}
-            styles={{
-              root: { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' },
-            }}
-          />
+          <Group gap="sm" wrap="wrap">
+            {user?.role === 'coach' && (
+              <SegmentedControl
+                value={scope}
+                onChange={setScope}
+                data={[
+                  { label: 'All Plans', value: 'all' },
+                  { label: 'My Created Plans', value: 'my_plans' },
+                ]}
+                color="teal"
+                styles={{
+                  root: { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' },
+                }}
+              />
+            )}
+            <SegmentedControl
+              value={goal}
+              onChange={setGoal}
+              data={[
+                { label: 'All Goals', value: 'all' },
+                { label: 'Fat Loss', value: 'fat_loss' },
+                { label: 'Muscle Gain', value: 'muscle_gain' },
+                { label: 'Maintenance', value: 'maintenance' },
+              ]}
+              styles={{
+                root: { backgroundColor: 'var(--surface-2)', border: '1px solid var(--border)' },
+              }}
+            />
+          </Group>
           <TextInput
             placeholder="Search plans..."
             value={search}
