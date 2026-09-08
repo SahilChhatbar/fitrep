@@ -4,7 +4,7 @@ import React, { Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { Divider, NavLink, Stack } from '@mantine/core'
-import { Apple, ClipboardList, Dumbbell, LayoutDashboard, LineChart, Salad } from 'lucide-react'
+import { Apple, ClipboardList, Dumbbell, LayoutDashboard, LineChart, Salad, Users } from 'lucide-react'
 import { useAuthStore } from '@/features/auth/authStore'
 
 interface SidebarProps {
@@ -24,6 +24,7 @@ const SidebarContent = ({ toggle }: SidebarProps): React.JSX.Element => {
   const isDietsActive = (pathname === '/diets' || pathname.startsWith('/diets/')) && !isMyPlansFilter
   const isMyWorkoutsActive = pathname === '/workouts' && isMyPlansFilter
   const isMyDietsActive = pathname === '/diets' && isMyPlansFilter
+  const isMyClientsActive = pathname === '/coach/clients' || pathname.startsWith('/coach/clients')
 
   return (
     <Stack justify="space-between" h="100%" px="md" py="md" pt="lg">
@@ -75,6 +76,15 @@ const SidebarContent = ({ toggle }: SidebarProps): React.JSX.Element => {
         {isCoach && (
           <>
             <Divider my={6} label="Coach Menu" labelPosition="center" />
+            <NavLink
+              component={Link}
+              href="/coach/clients"
+              label="My Clients"
+              leftSection={<Users size={16} />}
+              active={isMyClientsActive}
+              onClick={toggle}
+              style={{ borderRadius: 8 }}
+            />
             <NavLink
               component={Link}
               href="/workouts?filter=my_plans"

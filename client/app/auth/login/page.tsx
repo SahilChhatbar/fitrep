@@ -28,6 +28,7 @@ export default function LoginPage() {
     initialValues: {
       identifier: '',
       password: '',
+      role: 'user' as 'user' | 'coach',
     },
     validate: {
       identifier: (value: string) => (value.length < 1 ? 'Name or Email is required' : null),
@@ -106,6 +107,20 @@ export default function LoginPage() {
         >
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Stack gap="md">
+              <Box mb={4}>
+                <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb={6}>
+                  Sign in as
+                </Text>
+                <SegmentedControl
+                  fullWidth
+                  data={[
+                    { label: 'User / Trainee', value: 'user' },
+                    { label: 'Fitness Coach', value: 'coach' },
+                  ]}
+                  {...form.getInputProps('role')}
+                />
+              </Box>
+
               <TextInput
                 label="Name or Email"
                 placeholder="john@example.com"

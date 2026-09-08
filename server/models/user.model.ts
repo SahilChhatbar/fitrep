@@ -6,6 +6,7 @@ export interface UserDocument extends Document {
   email: string;
   password: string;
   role: "user" | "coach";
+  coachId?: mongoose.Types.ObjectId | { _id: string; name: string; email: string } | null;
   activeDietId?: mongoose.Types.ObjectId | null;
   activeWorkoutId?: mongoose.Types.ObjectId | null;
   tracking: {
@@ -42,6 +43,11 @@ const UserSchema = new Schema<UserDocument>(
       enum: ["user", "coach"],
       default: "user",
       required: true,
+    },
+    coachId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
     },
     activeDietId: {
       type: Schema.Types.ObjectId,

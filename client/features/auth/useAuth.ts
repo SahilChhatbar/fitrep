@@ -14,6 +14,19 @@ export const useAuth = () => {
   const loginMutation = useMutation<AuthResponse, ApiError, LoginRequest>({
     mutationFn: async (data: LoginRequest) => {
       const response = await apiClient.post<AuthResponse>('/user/login', data)
+      const returnedUser = response.data?.user
+      const returnedRole = returnedUser?.role || 'user'
+      if (data.role && returnedRole !== data.role) {
+        const actualRoleLabel = returnedRole === 'coach' ? 'Coach' : 'User / Trainee'
+        const errorMsg = `Account is registered as a ${actualRoleLabel}. Please switch to "Sign in as ${actualRoleLabel}".`
+        throw {
+          response: {
+            data: {
+              message: errorMsg,
+            },
+          },
+        } as ApiError
+      }
       return response.data
     },
     onSuccess: (data) => {

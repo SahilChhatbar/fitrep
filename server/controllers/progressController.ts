@@ -213,163 +213,153 @@ export const deleteWorkoutSession = async (req: AuthRequest, res: Response) => {
 
 // ─── Combined Summary ─────────────────────────────────────────────────────────
 
+export const fetchProgressSummaryForUser = async (userId: string) => {
+  const TIMEOUT_MS = 8_000;
+  const withTimeout = <T>(p: Promise<T>): Promise<T> =>
+    Promise.race([
+      p,
+      new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("DB query timeout")), TIMEOUT_MS),
+      ),
+    ]);
+
+  const [
+    user,
+    totalSessions,
+    totalCheckIns,
+    recentSessions,
+    recentCheckIns,
+    latestCheckIn,
+    firstCheckIn,
+    allSessionDayKeys,
+    allCheckInDayKeys,
+  ] = await withTimeout(
+    Promise.all([
+      User.findById(userId)
+        .select("name email activeDietId activeWorkoutId tracking createdAt")
+        .populate("activeDietId", "name goal type calories macros")
+        .populate("activeWorkoutId", "name level goal daysPerWeek split"),
+
+      WorkoutSession.countDocuments({ userId }),
+      CheckIn.countDocuments({ userId }),
+
+      WorkoutSession.find({ userId })
+        .sort({ completedAt: -1 })
+        .limit(7)
+        .populate("workoutId", "name level goal"),
+
+      CheckIn.find({ userId }).sort({ date: -1 }).limit(7),
+
+      CheckIn.findOne({ userId })
+        .sort({ date: -1 })
+        .select("weight bodyFat date"),
+      CheckIn.findOne({ userId })
+        .sort({ date: 1 })
+        .select("weight bodyFat date"),
+
+      WorkoutSession.find({ userId })
+        .select("dayKey")
+        .lean<{ dayKey: string }[]>(),
+
+      CheckIn.find({ userId }).select("dayKey").lean<{ dayKey: string }[]>(),
+    ]),
+  );
+
+  if (!user) {
+    return null;
+  }
+
+  const sessionDaySet = new Set(allSessionDayKeys.map((s) => s.dayKey));
+  const checkInDaySet = new Set(allCheckInDayKeys.map((c) => c.dayKey));
+
+  const streak = calculateStreak(sessionDaySet);
+  const totalActiveDays = sessionDaySet.size;
+
+  let overlapDays = 0;
+  for (const day of sessionDaySet) {
+    if (checkInDaySet.has(day)) overlapDays++;
+  }
+
+  let weightProgress: {
+    start: number | null;
+    current: number | null;
+    change: number | null;
+  } = { start: null, current: null, change: null };
+
+  if (firstCheckIn?.weight != null && latestCheckIn?.weight != null) {
+    const change =
+      Math.round((latestCheckIn.weight - firstCheckIn.weight) * 10) / 10;
+    weightProgress = {
+      start: firstCheckIn.weight,
+      current: latestCheckIn.weight,
+      change,
+    };
+  }
+
+  const avgDurationResult = await WorkoutSession.aggregate<{
+    avg: number;
+  }>([
+    {
+      $match: {
+        userId: new mongoose.Types.ObjectId(userId),
+        durationMinutes: { $exists: true },
+      },
+    },
+    { $group: { _id: null, avg: { $avg: "$durationMinutes" } } },
+  ]);
+  const avgSessionDuration =
+    avgDurationResult[0]?.avg != null
+      ? Math.round(avgDurationResult[0].avg)
+      : null;
+
+  const totalDietAssignments = user.tracking.dietLog.length;
+  const totalWorkoutAssignments = user.tracking.workoutLog.length;
+
+  return {
+    user: {
+      name: user.name,
+      email: user.email,
+      memberSince: user.createdAt,
+      activeDiet: user.activeDietId,
+      activeWorkout: user.activeWorkoutId,
+    },
+    workout: {
+      totalSessions,
+      totalActiveDays,
+      currentStreak: streak.current,
+      longestStreak: streak.longest,
+      avgSessionDurationMinutes: avgSessionDuration,
+      recentSessions,
+      totalPlansAssigned: totalWorkoutAssignments,
+    },
+    diet: {
+      totalCheckIns,
+      totalCheckInDays: checkInDaySet.size,
+      totalPlansAssigned: totalDietAssignments,
+      recentCheckIns,
+      weightProgress,
+      latestBodyFat: latestCheckIn?.bodyFat ?? null,
+      latestCheckInDate: latestCheckIn?.date ?? null,
+    },
+    combined: {
+      overlapDays,
+      checkInConsistency:
+        totalActiveDays > 0
+          ? Math.round((overlapDays / totalActiveDays) * 100)
+          : 0,
+    },
+  };
+};
+
 export const getProgressSummary = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.userId!;
-
-    // ── Parallel fetch with a safety timeout ─────────────────────────────────
-    const TIMEOUT_MS = 8_000;
-    const withTimeout = <T>(p: Promise<T>): Promise<T> =>
-      Promise.race([
-        p,
-        new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error("DB query timeout")), TIMEOUT_MS),
-        ),
-      ]);
-
-    const [
-      user,
-      totalSessions,
-      totalCheckIns,
-      recentSessions,
-      recentCheckIns,
-      latestCheckIn,
-      firstCheckIn,
-      // Pull ALL dayKeys in one lean query each — used for streak + overlap
-      allSessionDayKeys,
-      allCheckInDayKeys,
-    ] = await withTimeout(
-      Promise.all([
-        User.findById(userId)
-          .select("name activeDietId activeWorkoutId tracking createdAt")
-          .populate("activeDietId", "name goal type calories macros")
-          .populate("activeWorkoutId", "name level goal daysPerWeek split"),
-
-        WorkoutSession.countDocuments({ userId }),
-        CheckIn.countDocuments({ userId }),
-
-        // Last 7 sessions for the "recent activity" feed
-        WorkoutSession.find({ userId })
-          .sort({ completedAt: -1 })
-          .limit(7)
-          .populate("workoutId", "name level goal"),
-
-        // Last 7 check-ins for the "recent check-ins" feed
-        CheckIn.find({ userId }).sort({ date: -1 }).limit(7),
-
-        CheckIn.findOne({ userId })
-          .sort({ date: -1 })
-          .select("weight bodyFat date"),
-        CheckIn.findOne({ userId })
-          .sort({ date: 1 })
-          .select("weight bodyFat date"),
-
-        // Lean distinct dayKeys for streak + overlap — no full doc hydration
-        WorkoutSession.find({ userId })
-          .select("dayKey")
-          .lean<{ dayKey: string }[]>(),
-
-        CheckIn.find({ userId }).select("dayKey").lean<{ dayKey: string }[]>(),
-      ]),
-    );
-
-    if (!user) {
+    const summary = await fetchProgressSummaryForUser(userId);
+    if (!summary) {
       res.status(404).json({ message: "User not found" });
       return;
     }
-
-    // ── Deduplicated day sets ─────────────────────────────────────────────────
-    const sessionDaySet = new Set(allSessionDayKeys.map((s) => s.dayKey));
-    const checkInDaySet = new Set(allCheckInDayKeys.map((c) => c.dayKey));
-
-    // ── Workout streak (uses session dayKeys) ─────────────────────────────────
-    const streak = calculateStreak(sessionDaySet);
-
-    // ── Distinct active days (unique calendar days with ≥1 session) ──────────
-    // Previously this was `totalSessions` which was wrong — e.g. 3 sessions in
-    // one day counted as 3 "active days".
-    const totalActiveDays = sessionDaySet.size;
-
-    // ── Overlap days (days with BOTH a session AND a check-in) ───────────────
-    // Reuses already-fetched sets — no extra DB round-trip.
-    let overlapDays = 0;
-    for (const day of sessionDaySet) {
-      if (checkInDaySet.has(day)) overlapDays++;
-    }
-
-    // ── Weight progress ───────────────────────────────────────────────────────
-    let weightProgress: {
-      start: number | null;
-      current: number | null;
-      change: number | null;
-    } = { start: null, current: null, change: null };
-
-    if (firstCheckIn?.weight != null && latestCheckIn?.weight != null) {
-      const change =
-        Math.round((latestCheckIn.weight - firstCheckIn.weight) * 10) / 10;
-      weightProgress = {
-        start: firstCheckIn.weight,
-        current: latestCheckIn.weight,
-        change,
-      };
-    }
-
-    // ── Average session duration (only sessions that recorded it) ────────────
-    const avgDurationResult = await WorkoutSession.aggregate<{
-      avg: number;
-    }>([
-      {
-        $match: {
-          userId: new mongoose.Types.ObjectId(userId),
-          durationMinutes: { $exists: true },
-        },
-      },
-      { $group: { _id: null, avg: { $avg: "$durationMinutes" } } },
-    ]);
-    const avgSessionDuration =
-      avgDurationResult[0]?.avg != null
-        ? Math.round(avgDurationResult[0].avg)
-        : null;
-
-    // ── Plan assignment counts ────────────────────────────────────────────────
-    const totalDietAssignments = user.tracking.dietLog.length;
-    const totalWorkoutAssignments = user.tracking.workoutLog.length;
-
-    res.json({
-      user: {
-        name: user.name,
-        memberSince: user.createdAt,
-        activeDiet: user.activeDietId,
-        activeWorkout: user.activeWorkoutId,
-      },
-      workout: {
-        totalSessions,
-        totalActiveDays, // distinct calendar days with ≥1 session
-        currentStreak: streak.current,
-        longestStreak: streak.longest,
-        avgSessionDurationMinutes: avgSessionDuration,
-        recentSessions,
-        totalPlansAssigned: totalWorkoutAssignments,
-      },
-      diet: {
-        totalCheckIns,
-        totalCheckInDays: checkInDaySet.size, // distinct days with a check-in
-        totalPlansAssigned: totalDietAssignments,
-        recentCheckIns,
-        weightProgress,
-        latestBodyFat: latestCheckIn?.bodyFat ?? null,
-        latestCheckInDate: latestCheckIn?.date ?? null,
-      },
-      combined: {
-        // Days the user both worked out AND checked in — commitment metric
-        overlapDays,
-        // Ratio: what fraction of workout days did they also check in?
-        checkInConsistency:
-          totalActiveDays > 0
-            ? Math.round((overlapDays / totalActiveDays) * 100)
-            : 0,
-      },
-    });
+    res.json(summary);
   } catch (error) {
     console.error("getProgressSummary error:", error);
     res.status(500).json({ message: "Failed to fetch progress summary" });

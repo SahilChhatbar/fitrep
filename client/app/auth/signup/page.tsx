@@ -20,6 +20,9 @@ import { useForm } from '@mantine/form'
 import { ArrowRight, CheckCircle2, Dumbbell } from 'lucide-react'
 import { useAuth } from '@/features/auth/useAuth'
 
+import { useCoaches } from '@/features/coach/useCoach'
+import { Select } from '@mantine/core'
+
 const perks = [
   'Track workout sessions & build streaks',
   'Log daily weight & body composition',
@@ -29,12 +32,15 @@ const perks = [
 
 export default function SignupPage() {
   const { signup, isSigningUp, signupError } = useAuth()
+  const { data: coaches = [], isLoading: isLoadingCoaches } = useCoaches()
 
   const form = useForm({
     initialValues: {
       name: '',
       email: '',
       password: '',
+      role: 'user' as 'user' | 'coach',
+      coachId: 'none',
     },
     validate: {
       name: (value: string) => (value.length < 2 ? 'Name must be at least 2 characters' : null),
@@ -44,8 +50,20 @@ export default function SignupPage() {
     },
   })
 
+  const coachOptions = [
+    { value: 'none', label: '🚫 No Coach' },
+    ...coaches.map((c) => ({
+      value: c._id,
+      label: `🏋️ ${c.name} (${c.email})`,
+    })),
+  ]
+
   const handleSubmit = (values: typeof form.values) => {
-    signup(values)
+    const payload = {
+      ...values,
+      coachId: values.role === 'coach' || values.coachId === 'none' ? null : values.coachId,
+    }
+    signup(payload)
   }
 
   return (
@@ -183,6 +201,20 @@ export default function SignupPage() {
             >
               <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack gap="md">
+                  <Box mb="xs">
+                    <Text size="xs" fw={700} c="dimmed" tt="uppercase" mb={6}>
+                      I am signing up as
+                    </Text>
+                    <SegmentedControl
+                      fullWidth
+                      data={[
+                        { label: 'User / Trainee', value: 'user' },
+                        { label: 'Fitness Coach', value: 'coach' },
+                      ]}
+                      {...form.getInputProps('role')}
+                    />
+                  </Box>
+
                   <TextInput
                     label="Full Name"
                     placeholder="John Doe"
@@ -204,6 +236,21 @@ export default function SignupPage() {
                     required
                     {...form.getInputProps('password')}
                   />
+
+                  {form.values.role === 'user' && (
+                    <Select
+                      label="Select Your Coach (Optional)"
+                      description="You can choose a coach now or change anytime from your profile."
+                      data={coachOptions}
+                      searchable
+                      clearable
+                      disabled={isLoadingCoaches}
+                      nothingFoundMessage="No coaches available"
+                      placeholder="Search and select a coach..."
+                      size="md"
+                      {...form.getInputProps('coachId')}
+                    />
+                  )}
                 </Stack>
 
                 {signupError && (

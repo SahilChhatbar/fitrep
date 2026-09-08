@@ -7,6 +7,7 @@ export const signupSchema = z.object({
   email: z.string().email("Invalid email address").toLowerCase().trim(),
   password: z.string().min(6, "Password must be at least 6 characters"),
   role: z.enum(["user", "coach"]).optional().default("user"),
+  coachId: z.string().nullable().optional(),
 });
 
 export const loginSchema = z.object({
@@ -15,7 +16,7 @@ export const loginSchema = z.object({
   role: z.enum(["user", "coach"]).optional(),
 });
 
-// ─── Tracking ─────────────────────────────────────────────────────────────────
+// ─── Tracking & Coach ────────────────────────────────────────────────────────
 
 export const assignDietSchema = z.object({
   dietId: z.string().min(1, "dietId is required"),
@@ -27,9 +28,15 @@ export const assignWorkoutSchema = z.object({
   note: z.string().max(300).optional(),
 });
 
+export const assignCoachSchema = z.object({
+  coachId: z.string().nullable().optional(),
+});
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type SignupInput = z.infer<typeof signupSchema>;
 export type LoginInput = z.infer<typeof loginSchema>;
 export type AssignDietInput = z.infer<typeof assignDietSchema>;
 export type AssignWorkoutInput = z.infer<typeof assignWorkoutSchema>;
+export type AssignCoachInput = z.infer<typeof assignCoachSchema>;
+
