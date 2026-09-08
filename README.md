@@ -14,8 +14,8 @@ Before running the application, create `.env` files in both the `server/` and `c
 ### 1. Server `.env` (`server/.env`)
 Create a file named `.env` in the `server/` folder:
 ```env
-MONGODB_URI=mongodb+srv://canconic699_db_user:eQogR87wKArM6qxC@cluster0.6jwjzay.mongodb.net/
-JWT_SECRET=005832af645bc8bf2ac305fea8a8d2ce67db8fb5eea4fc4b4877dc7f090aee2e834bcb86588cdaf45af01980bea334f32c7af2c68f3d385a0d7cc4121502ed18
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
 CLIENT_ORIGIN=http://localhost:3000
 PORT=5000
 ```
