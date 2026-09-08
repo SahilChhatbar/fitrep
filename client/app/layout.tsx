@@ -22,6 +22,9 @@ const dmSerif = DM_Serif_Display({
 export const metadata: Metadata = {
   title: 'FitRep - Fitness, tracked.',
   description: 'Your personal fitness tracker',
+  icons: {
+    icon: '/logo.svg',
+  },
 }
 
 export default function RootLayout({
@@ -33,6 +36,7 @@ export default function RootLayout({
     <html lang="en" className={`${dmSans.variable} ${dmSerif.variable}`}>
       <head>
         <ColorSchemeScript />
+        <link rel="icon" href="/logo.svg" type="image/svg+xml" />
       </head>
       <body className="antialiased">
         <MantineProvider theme={theme}>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   Alert,
@@ -26,7 +26,7 @@ import { useAuth } from '@/features/auth/useAuth'
 import type { Workout } from '@/features/workout/workout.types'
 import { apiClient } from '@/lib/api-client'
 
-const Workouts = () => {
+const WorkoutsContent = () => {
   const { user } = useAuth()
   const searchParams = useSearchParams()
   const initialFilter = searchParams.get('filter') === 'my_plans' ? 'my_plans' : 'all'
@@ -279,6 +279,20 @@ const Workouts = () => {
         )}
       </Stack>
     </Container>
+  )
+}
+
+const Workouts = () => {
+  return (
+    <Suspense
+      fallback={
+        <Center h="60vh">
+          <Loader size="lg" color="cobaltBlue" />
+        </Center>
+      }
+    >
+      <WorkoutsContent />
+    </Suspense>
   )
 }
 

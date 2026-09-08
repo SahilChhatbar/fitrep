@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
   Alert,
@@ -25,7 +25,7 @@ import { useAuth } from '@/features/auth/useAuth'
 import type { Diet } from '@/features/diet/diet.types'
 import { apiClient } from '@/lib/api-client'
 
-const DietsPage = () => {
+const DietsContent = () => {
   const { user } = useAuth()
   const searchParams = useSearchParams()
   const initialFilter = searchParams.get('filter') === 'my_plans' ? 'my_plans' : 'all'
@@ -278,6 +278,20 @@ const DietsPage = () => {
         )}
       </Stack>
     </Container>
+  )
+}
+
+const DietsPage = () => {
+  return (
+    <Suspense
+      fallback={
+        <Center h="60vh">
+          <Loader size="lg" color="cobaltBlue" />
+        </Center>
+      }
+    >
+      <DietsContent />
+    </Suspense>
   )
 }
 

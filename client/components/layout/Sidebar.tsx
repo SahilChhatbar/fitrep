@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { Divider, NavLink, Stack } from '@mantine/core'
@@ -11,7 +11,7 @@ interface SidebarProps {
   toggle: () => void
 }
 
-const Sidebar = ({ toggle }: SidebarProps): React.JSX.Element => {
+const SidebarContent = ({ toggle }: SidebarProps): React.JSX.Element => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const token = useAuthStore((s) => s.token)
@@ -97,6 +97,14 @@ const Sidebar = ({ toggle }: SidebarProps): React.JSX.Element => {
         )}
       </Stack>
     </Stack>
+  )
+}
+
+const Sidebar = (props: SidebarProps): React.JSX.Element => {
+  return (
+    <Suspense fallback={null}>
+      <SidebarContent {...props} />
+    </Suspense>
   )
 }
 
