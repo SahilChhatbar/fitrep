@@ -1,87 +1,39 @@
-# FitRep
-**Your fitness, logged.**
+# FitRep — Full-Stack Fitness & Coach Platform
 
-FitRep is a full-stack fitness and nutrition tracking platform built for consistency, clarity, and data-driven progress.
-It allows users to log workouts, track nutrition, set goals, and visualize progress — all in one modern web app.
+- 🌐 **Live Website**: [https://fit-rep.vercel.app/](https://fit-rep.vercel.app/)
+- 💻 **GitHub Repository**: [https://github.com/SahilChhatbar/fitrep](https://github.com/SahilChhatbar/fitrep)
 
-This project is designed as a real-world, scalable application using modern frontend and backend patterns.
-
----
-
-## 🚀 Features
-
-### 🏋️ Workout Tracking
-- Log workouts with exercises, sets, reps, and weight
-- Track workout history and consistency
-- View training progress over time
-
-### 🥗 Nutrition Tracking
-- Automatic calorie and macro calculations
-- Daily nutrition summaries (calories, protein, carbs, fats)
-
-### 🎯 Goals & Progress
-- Set fitness goals (weight, strength, consistency)
-- Track bodyweight and progress metrics
-- Visualize trends and adherence
-
-### 🔐 Authentication & Security
-- Secure authentication using JWT
-- Password hashing with bcrypt
-- Protected routes and role-based access
-
-### 📊 Data-Driven Insights
-- Cached nutrition data for performance
-- Backend-computed stats and summaries
-- Clean separation of raw data and analytics
-
-### 🎨 Clean UI
-- Modern, responsive interface
-- Minimal, distraction-free design
-- Open-source SVG illustrations for onboarding and empty states
+FitRep is a modern full-stack fitness, nutrition, and coach-client management web application designed for tracking workout consistency, diet plans, weight composition, and coach oversight.
 
 ---
 
-## 🧱 Tech Stack
+## ⚙️ Environment Variables Setup (`.env`)
 
-### Frontend (`client/`)
-- **Next.js** — React framework with SSR and routing
-- **Zustand** — Client-side state management
-- **TanStack Query** — Server-state fetching and caching
+Before running the application, create `.env` files in both the `server/` and `client/` directories.
 
-### Backend (`server/`)
-- **Node.js + Express** — REST API and business logic
-- **MongoDB** — NoSQL database
-- **JWT** — Authentication and session handling
-- **bcrypt** — Secure password hashing
+### 1. Server `.env` (`server/.env`)
+Create a file named `.env` in the `server/` folder:
+```env
+MONGODB_URI=mongodb+srv://canconic699_db_user:eQogR87wKArM6qxC@cluster0.6jwjzay.mongodb.net/
+JWT_SECRET=005832af645bc8bf2ac305fea8a8d2ce67db8fb5eea4fc4b4877dc7f090aee2e834bcb86588cdaf45af01980bea334f32c7af2c68f3d385a0d7cc4121502ed18
+CLIENT_ORIGIN=http://localhost:3000
+PORT=5000
+```
 
-### External Data & Assets
-- **unDraw** — Open-source SVG illustrations
-
----
-
-## 🏗️ Project Structure
-fitrep/
-├── client/ # Next.js frontend
-│ ├── src/
-│ ├── public/
-│ ├── .gitignore
-│ └── package.json
-├── server/ # Express backend
-│ ├── src/
-│ ├── .gitignore
-│ └── package.json
-├── .gitignore
-└── README.md
+### 2. Client `.env` (`client/.env`)
+Create a file named `.env` in the `client/` folder:
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:5000/api
+```
 
 ---
 
-## ⚡ Getting Started
+## ⚡ Getting Started (Local Setup)
 
-Follow these steps to set up and run FitRep locally.
+Follow these steps to set up and run FitRep locally in two separate terminal windows.
 
-### 1. Start the Server (Backend)
-
-First, navigate to the `server/` directory, install dependencies if you haven't already, and start the backend server:
+### Step 1: Start the Backend Server (Terminal 1)
+Navigate to the `server/` directory, install dependencies, and start the backend server:
 
 ```bash
 cd server
@@ -89,11 +41,10 @@ npm install
 npm run dev
 ```
 
-The backend server will run on `http://localhost:5000` (or your configured `PORT`).
+*The backend server will run on `http://localhost:5000`.*
 
-### 2. Start the Client (Frontend)
-
-Next, in a separate terminal window, navigate to the `client/` directory, install dependencies if needed, and start the frontend application:
+### Step 2: Start the Frontend Client (Terminal 2)
+In a **separate terminal window**, navigate to the `client/` directory, install dependencies, and start the Next.js client app:
 
 ```bash
 cd client
@@ -101,5 +52,50 @@ npm install
 npm run dev
 ```
 
-The Next.js client application will be available at `http://localhost:3000`.
+*The Next.js frontend client will run on `http://localhost:3000`.*
 
+---
+
+## 🔑 Test Credentials
+
+#### **Client (Trainee / User Account)**
+- **Username / Identifier:** `Sahil User`
+- **Password:** `mg7102003`
+
+#### **Coach Account**
+- **Username / Identifier:** `Sahil User`
+- **Password:** `mg7102003`
+
+---
+
+## 🚀 Features & Access Roles
+
+### 🏋️ 1. Guest Access (Without Login)
+- **Browse Workouts (`/workouts`)**: View public workout routines, exercise steps, and target muscle groups.
+- **Browse Diets (`/diets`)**: View public diet plans and macronutrient breakdowns.
+
+### 📊 2. Trainee / Client Features (Logged In)
+- **Plan Assignment**: Self-assign workout and diet plans.
+- **Progress Tracking (`/progress`)**: Log workout sessions, record weight & body fat check-ins, view streaks, and monitor check-in consistency scores.
+- **Coach Selection**: Select or change your assigned coach via *"My Profile & Coach"* in the header user menu using the searchable dropdown.
+
+### 👥 3. Fitness Coach Features (Logged In)
+- **Client Oversight Dashboard (`/coach/clients`)**: View assigned clients via *Sidebar → Coach Menu → My Clients*.
+- **Client Progress Inspection**: Open live progress summaries, workout streaks, weight trend stats, active plans, and recent workout/check-in activity feeds for assigned trainees.
+- **Plan Management**: Create custom workout & diet plans under *My Workout Plans* and *My Diet Plans*.
+
+---
+
+## 🧱 Tech Stack
+
+### Frontend (`client/`)
+- **Next.js (App Router)** & **React** — UI framework & rendering
+- **Mantine UI** — Component library & design system
+- **Zustand** — Client auth state management
+- **TanStack Query** — Server state fetching & caching
+
+### Backend (`server/`)
+- **Node.js + Express** — REST API & controller business logic
+- **MongoDB + Mongoose** — Database & object modeling
+- **JWT & bcrypt** — Token authentication & password hashing
+- **Zod** — Schema validation
