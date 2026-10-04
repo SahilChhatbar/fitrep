@@ -55,8 +55,48 @@ export const WorkoutFormModal = ({
       ],
     },
     validate: {
-      name: (val) => (val.trim().length < 2 ? 'Name is required' : null),
-      split: (val) => (val.trim().length < 2 ? 'Split description is required' : null),
+      name: (val) => {
+        if (!val || val.trim().length < 2) return 'Plan name must be at least 2 characters'
+        if (val.trim().length > 120) return 'Plan name must be under 120 characters'
+        return null
+      },
+      split: (val) => {
+        if (!val || val.trim().length < 2) return 'Split description is required'
+        if (val.trim().length > 100) return 'Split description is too long'
+        return null
+      },
+      daysPerWeek: (val) => {
+        if (val === undefined || val === null) return 'Days per week is required'
+        if (val < 1) return 'Must train at least 1 day per week'
+        if (val > 7) return 'Cannot exceed 7 days per week'
+        return null
+      },
+      schedule: {
+        day: (val: string) =>
+          !val || val.trim().length < 1
+            ? 'Day name is required'
+            : val.trim().length > 50
+            ? 'Day name is too long'
+            : null,
+        focus: (val: string) =>
+          !val || val.trim().length < 1
+            ? 'Focus is required'
+            : val.trim().length > 100
+            ? 'Focus description is too long'
+            : null,
+        exercises: {
+          name: (val: string) =>
+            !val || val.trim().length < 1
+              ? 'Exercise name is required'
+              : val.trim().length > 100
+              ? 'Exercise name is too long'
+              : null,
+          sets: (val: number) =>
+            val !== undefined && (val < 1 || val > 100)
+              ? 'Sets must be between 1 and 100'
+              : null,
+        },
+      },
     },
   })
 
@@ -172,6 +212,7 @@ export const WorkoutFormModal = ({
             label="Plan Name"
             placeholder="5-Day Hypertrophy Split"
             required
+            maxLength={120}
             {...form.getInputProps('name')}
           />
 
@@ -203,12 +244,14 @@ export const WorkoutFormModal = ({
               label="Days Per Week"
               min={1}
               max={7}
+              required
               {...form.getInputProps('daysPerWeek')}
             />
             <TextInput
               label="Split Description"
               placeholder="Push / Pull / Legs"
               required
+              maxLength={100}
               {...form.getInputProps('split')}
             />
           </Group>
@@ -238,12 +281,16 @@ export const WorkoutFormModal = ({
                         placeholder="Day (e.g. Day 1)"
                         size="xs"
                         fw={600}
+                        required
+                        maxLength={50}
                         style={{ width: 120 }}
                         {...form.getInputProps(`schedule.${dayIdx}.day`)}
                       />
                       <TextInput
                         placeholder="Focus (e.g. Chest & Triceps)"
                         size="xs"
+                        required
+                        maxLength={100}
                         style={{ flex: 1 }}
                         {...form.getInputProps(`schedule.${dayIdx}.focus`)}
                       />
@@ -266,18 +313,23 @@ export const WorkoutFormModal = ({
                         <TextInput
                           placeholder="Exercise name"
                           size="xs"
+                          required
+                          maxLength={100}
                           style={{ flex: 2 }}
                           {...form.getInputProps(`schedule.${dayIdx}.exercises.${exIdx}.name`)}
                         />
                         <NumberInput
                           placeholder="Sets"
                           size="xs"
+                          min={1}
+                          max={100}
                           style={{ width: 70 }}
                           {...form.getInputProps(`schedule.${dayIdx}.exercises.${exIdx}.sets`)}
                         />
                         <TextInput
                           placeholder="Reps (e.g. 10-12)"
                           size="xs"
+                          maxLength={20}
                           style={{ width: 100 }}
                           {...form.getInputProps(`schedule.${dayIdx}.exercises.${exIdx}.reps`)}
                         />

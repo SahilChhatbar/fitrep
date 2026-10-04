@@ -55,13 +55,22 @@ export const checkInSchema = z
 // ─── Workout Session ──────────────────────────────────────────────────────────
 
 export const workoutSessionSchema = z.object({
-  workoutId: z.string().min(1, "workoutId is required"),
-  dayCompleted: z.string().min(1, "dayCompleted is required"),
+  workoutId: z
+    .string()
+    .regex(/^[a-f\d]{24}$/i, "Invalid workoutId format"),
+  dayCompleted: z
+    .string()
+    .min(1, "dayCompleted is required")
+    .max(50, "dayCompleted is too long")
+    .trim(),
   completedAt: z
     .string()
     .optional()
     .transform((v) => (v ? new Date(v) : new Date()))
-    .refine((d) => !isNaN(d.getTime()), { message: "Invalid date" }),
+    .refine((d) => !isNaN(d.getTime()), { message: "Invalid date" })
+    .refine((d) => d <= new Date(), {
+      message: "completedAt cannot be in the future",
+    }),
   /** See utcOffsetMinutes note above */
   utcOffsetMinutes: z.number().int().min(-720).max(840).default(0),
   durationMinutes: z
@@ -70,7 +79,11 @@ export const workoutSessionSchema = z.object({
     .min(1, "Duration must be at least 1 minute")
     .max(600, "Duration seems too long")
     .optional(),
-  notes: z.string().max(500, "Notes must be under 500 characters").optional(),
+  notes: z
+    .string()
+    .max(500, "Notes must be under 500 characters")
+    .trim()
+    .optional(),
 });
 
 // ─── History query ────────────────────────────────────────────────────────────

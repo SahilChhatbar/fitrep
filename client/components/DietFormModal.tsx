@@ -58,8 +58,43 @@ export const DietFormModal = ({
       ],
     },
     validate: {
-      name: (val) => (val.trim().length < 2 ? 'Name is required' : null),
-      calories: (val) => (val <= 0 ? 'Calories must be greater than 0' : null),
+      name: (val) => {
+        if (!val || val.trim().length < 2) return 'Plan name must be at least 2 characters'
+        if (val.trim().length > 120) return 'Plan name must be under 120 characters'
+        return null
+      },
+      calories: (val) => {
+        if (val === undefined || val === null) return 'Daily calories are required'
+        if (val < 500) return 'Calories must be at least 500 kcal'
+        if (val > 10_000) return 'Calories must be under 10,000 kcal'
+        return null
+      },
+      macros: {
+        protein: (val: number) =>
+          val !== undefined && val < 0 ? 'Protein cannot be negative' : null,
+        carbs: (val: number) =>
+          val !== undefined && val < 0 ? 'Carbs cannot be negative' : null,
+        fat: (val: number) =>
+          val !== undefined && val < 0 ? 'Fat cannot be negative' : null,
+      },
+      meals: {
+        name: (val: string) =>
+          !val || val.trim().length < 1 ? 'Meal name is required' : val.trim().length > 100 ? 'Meal name is too long' : null,
+        foods: {
+          name: (val: string) =>
+            !val || val.trim().length < 1 ? 'Food name is required' : val.trim().length > 100 ? 'Food name is too long' : null,
+          nutrition: {
+            calories: (val: number) =>
+              val !== undefined && val < 0 ? 'Calories cannot be negative' : null,
+            protein: (val: number) =>
+              val !== undefined && val < 0 ? 'Protein cannot be negative' : null,
+            carbs: (val: number) =>
+              val !== undefined && val < 0 ? 'Carbs cannot be negative' : null,
+            fat: (val: number) =>
+              val !== undefined && val < 0 ? 'Fat cannot be negative' : null,
+          },
+        },
+      },
     },
   })
 
@@ -179,6 +214,7 @@ export const DietFormModal = ({
             label="Plan Name"
             placeholder="High Protein Fat Loss"
             required
+            maxLength={120}
             {...form.getInputProps('name')}
           />
 
@@ -208,21 +244,26 @@ export const DietFormModal = ({
               label="Daily Calories (kcal)"
               min={500}
               max={10000}
+              step={50}
+              required
               {...form.getInputProps('calories')}
             />
             <NumberInput
               label="Protein (g)"
               min={0}
+              max={500}
               {...form.getInputProps('macros.protein')}
             />
             <NumberInput
               label="Carbs (g)"
               min={0}
+              max={1000}
               {...form.getInputProps('macros.carbs')}
             />
             <NumberInput
               label="Fat (g)"
               min={0}
+              max={500}
               {...form.getInputProps('macros.fat')}
             />
           </Group>
@@ -251,6 +292,7 @@ export const DietFormModal = ({
                       placeholder="Meal Name (e.g. Breakfast)"
                       size="xs"
                       fw={600}
+                      required
                       style={{ flex: 1 }}
                       {...form.getInputProps(`meals.${mealIdx}.name`)}
                     />
@@ -272,18 +314,23 @@ export const DietFormModal = ({
                         <TextInput
                           placeholder="Food name"
                           size="xs"
+                          required
                           style={{ flex: 2 }}
                           {...form.getInputProps(`meals.${mealIdx}.foods.${foodIdx}.name`)}
                         />
                         <NumberInput
-                          placeholder="Calories"
+                          placeholder="Cal"
                           size="xs"
+                          min={0}
+                          max={5000}
                           style={{ width: 80 }}
                           {...form.getInputProps(`meals.${mealIdx}.foods.${foodIdx}.nutrition.calories`)}
                         />
                         <NumberInput
-                          placeholder="Protein"
+                          placeholder="Prot"
                           size="xs"
+                          min={0}
+                          max={500}
                           style={{ width: 70 }}
                           {...form.getInputProps(`meals.${mealIdx}.foods.${foodIdx}.nutrition.protein`)}
                         />

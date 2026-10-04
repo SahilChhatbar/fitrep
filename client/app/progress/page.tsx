@@ -57,6 +57,18 @@ function CheckInModal({ opened, onClose }: { opened: boolean; onClose: () => voi
       bodyFat: undefined as number | undefined,
       notes: '',
     },
+    validate: {
+      weight: (v) =>
+        v !== undefined && (v < 20 || v > 500)
+          ? 'Weight must be between 20 and 500 kg'
+          : null,
+      bodyFat: (v) =>
+        v !== undefined && (v < 1 || v > 70)
+          ? 'Body fat must be between 1% and 70%'
+          : null,
+      notes: (v) =>
+        v && v.length > 500 ? 'Notes must be under 500 characters' : null,
+    },
   })
 
   const handleSubmit = (values: typeof form.values) => {
@@ -68,7 +80,7 @@ function CheckInModal({ opened, onClose }: { opened: boolean; onClose: () => voi
     if (!payload.weight && !payload.bodyFat && !payload.notes) {
       notifications.show({
         title: 'Required',
-        message: 'Fill in at least one field.',
+        message: 'Fill in at least weight, body fat %, or notes.',
         color: 'red',
       })
       return
@@ -188,6 +200,12 @@ function SessionModal({ opened, onClose }: { opened: boolean; onClose: () => voi
     validate: {
       workoutId: (v) => (!v ? 'Select a workout' : null),
       dayCompleted: (v) => (!v ? 'Select a day' : null),
+      durationMinutes: (v) =>
+        v !== undefined && (v < 1 || v > 600)
+          ? 'Duration must be between 1 and 600 minutes'
+          : null,
+      notes: (v) =>
+        v && v.length > 500 ? 'Notes must be under 500 characters' : null,
     },
   })
 

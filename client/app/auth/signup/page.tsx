@@ -43,10 +43,22 @@ export default function SignupPage() {
       coachId: 'none',
     },
     validate: {
-      name: (value: string) => (value.length < 2 ? 'Name must be at least 2 characters' : null),
-      email: (value: string) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email address'),
-      password: (value: string) =>
-        value.length < 6 ? 'Password must be at least 6 characters' : null,
+      name: (value: string) => {
+        if (value.trim().length < 2) return 'Name must be at least 2 characters'
+        if (value.trim().length > 60) return 'Name must be under 60 characters'
+        return null
+      },
+      email: (value: string) => {
+        if (!value.trim()) return 'Email is required'
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Invalid email address'
+        if (value.length > 254) return 'Email is too long'
+        return null
+      },
+      password: (value: string) => {
+        if (value.length < 6) return 'Password must be at least 6 characters'
+        if (value.length > 128) return 'Password must be under 128 characters'
+        return null
+      },
     },
   })
 
@@ -220,6 +232,7 @@ export default function SignupPage() {
                     placeholder="John Doe"
                     size="md"
                     required
+                    maxLength={60}
                     {...form.getInputProps('name')}
                   />
                   <TextInput
