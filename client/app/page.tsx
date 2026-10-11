@@ -1,12 +1,16 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import {
   Badge,
   Box,
   Button,
+  Center,
   Container,
   Group,
+  Loader,
   SimpleGrid,
   Stack,
   Text,
@@ -23,7 +27,7 @@ import {
   Target,
   TrendingUp,
 } from 'lucide-react'
-import { useAuth } from '@/features/auth/useAuth'
+import { useAuthStore } from '@/features/auth/authStore'
 
 const features = [
   {
@@ -60,7 +64,32 @@ const stats = [
 ]
 
 export default function Home() {
-  const { token } = useAuth()
+  const token = useAuthStore((s) => s.token)
+  const router = useRouter()
+  const [hasHydrated, setHasHydrated] = useState(false)
+
+  useEffect(() => {
+    const unsub = useAuthStore.persist.onFinishHydration(() => {
+      setHasHydrated(true)
+    })
+    setHasHydrated(useAuthStore.persist.hasHydrated())
+    return () => unsub()
+  }, [])
+
+  useEffect(() => {
+    if (hasHydrated && token) {
+      router.replace('/dashboard')
+    }
+  }, [hasHydrated, token, router])
+
+  if (!hasHydrated || token) {
+    return (
+      <Center h="60vh">
+        <Loader size="lg" color="cobaltBlue" />
+      </Center>
+    )
+  }
+
   const isGuest = !token
 
   return (

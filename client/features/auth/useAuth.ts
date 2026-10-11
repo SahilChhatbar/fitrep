@@ -31,7 +31,7 @@ export const useAuth = () => {
     },
     onSuccess: (data) => {
       setAuth(data.user, data.token)
-      router.push('/')
+      router.push('/dashboard')
     },
   })
 
@@ -42,7 +42,7 @@ export const useAuth = () => {
     },
     onSuccess: (data) => {
       setAuth(data.user, data.token)
-      router.push('/')
+      router.push('/dashboard')
     },
   })
 

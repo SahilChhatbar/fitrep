@@ -56,8 +56,7 @@ const Header = ({
             align="flex-end"
             gap="xs"
           >
-            <Link href="/">
-              {' '}
+            <Link href={user ? '/dashboard' : '/'}>
               <Image
                 src={logo}
                 alt="FitRep Logo"

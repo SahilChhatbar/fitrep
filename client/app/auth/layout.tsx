@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Center, Loader } from '@mantine/core'
 import { useAuthStore } from '@/features/auth/authStore'
@@ -8,15 +8,24 @@ import { useAuthStore } from '@/features/auth/authStore'
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   const token = useAuthStore((s) => s.token)
   const router = useRouter()
+  const [hasHydrated, setHasHydrated] = useState(false)
 
   useEffect(() => {
-    if (token) {
-      router.replace('/')
-    }
-  }, [token, router])
+    const unsub = useAuthStore.persist.onFinishHydration(() => {
+      setHasHydrated(true)
+    })
+    setHasHydrated(useAuthStore.persist.hasHydrated())
+    return () => unsub()
+  }, [])
 
-  // While redirecting, show nothing (avoids flash of login UI)
-  if (token) {
+  useEffect(() => {
+    if (hasHydrated && token) {
+      router.replace('/dashboard')
+    }
+  }, [hasHydrated, token, router])
+
+  // While redirecting or hydrating, show loader (avoids flash of login UI)
+  if (!hasHydrated || token) {
     return (
       <Center h="100vh">
         <Loader size="lg" color="cobaltBlue" />

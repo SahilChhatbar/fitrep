@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
@@ -102,14 +102,23 @@ const DashboardPage = () => {
   const token = useAuthStore((s) => s.token)
   const router = useRouter()
   const { summary, isLoadingSummary } = useProgress()
+  const [hasHydrated, setHasHydrated] = useState(false)
 
   useEffect(() => {
-    if (!token) {
-      router.replace('/')
-    }
-  }, [token, router])
+    const unsub = useAuthStore.persist.onFinishHydration(() => {
+      setHasHydrated(true)
+    })
+    setHasHydrated(useAuthStore.persist.hasHydrated())
+    return () => unsub()
+  }, [])
 
-  if (!token) return null
+  useEffect(() => {
+    if (hasHydrated && !token) {
+      router.replace('/auth/login')
+    }
+  }, [hasHydrated, token, router])
+
+  if (!hasHydrated || !token) return null
 
   if (isLoadingSummary) {
     return (
